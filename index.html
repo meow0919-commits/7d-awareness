@@ -1263,10 +1263,12 @@ let paidUnlocked = localStorage.getItem('aiproj_paid') === 'true';
 let userInputs = JSON.parse(localStorage.getItem('aiproj_inputs') || '{}');
 
 function save() {
-  localStorage.setItem('aiproj_currentDay', currentDay);
-  localStorage.setItem('aiproj_maxReached', maxReachedDay);
-  localStorage.setItem('aiproj_completed', JSON.stringify(completedDays));
-  localStorage.setItem('aiproj_inputs', JSON.stringify(userInputs));
+  try {
+    localStorage.setItem('aiproj_currentDay', currentDay);
+    localStorage.setItem('aiproj_maxReached', maxReachedDay);
+    localStorage.setItem('aiproj_completed', JSON.stringify(completedDays));
+    localStorage.setItem('aiproj_inputs', JSON.stringify(userInputs));
+  } catch(e) {}
 }
 
 function isDone(d) { return completedDays.includes(d); }
@@ -1541,8 +1543,8 @@ function toggleDay(dayNum) {
     return;
   }
   currentDay = dayNum;
-  save();
   renderAll();
+  save();
   setTimeout(() => {
     const el = document.getElementById('dayCard' + dayNum);
     if (el) {
@@ -1561,8 +1563,8 @@ function markDone(dayNum) {
     currentDay = Math.min(7, currentDay + 1);
     if (currentDay > maxReachedDay) maxReachedDay = currentDay;
   }
-  save();
   renderAll();
+  save();
 
   // Paywall: completing Day 3 advances to Day 4 which is behind paywall
   if (isCurrent && dayNum === 3 && !paidUnlocked) {
