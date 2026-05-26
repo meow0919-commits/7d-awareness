@@ -1387,7 +1387,7 @@ function renderAll() {
     // AI Copy Block
     html += `<div class="copy-block" id="copyBlock${dayNum}">`;
     html += `<div class="copy-label">${d.aiLabel}</div>`;
-    html += `<button class="copy-btn" onclick="copyPrompt(${dayNum}, event)">📋 一键复制给 AI</button>`;
+    html += `<button class="copy-btn" onclick="copyPrompt(${dayNum})">📋 一键复制给 AI</button>`;
     html += `<div class="copy-hint">点一下 → 切到AI 工具 → 粘贴 → 回来继续</div>`;
     html += `</div>`;
 
@@ -1424,13 +1424,13 @@ function renderAll() {
     if (!done) {
       html += `<div class="done-section">`;
       if (dayNum === 7) {
-        html += `<button class="done-btn" onclick="markDone(${dayNum}, event)">完成最后一天，领取通关彩蛋</button>`;
+        html += `<button class="done-btn" onclick="markDone(${dayNum})">完成最后一天，领取通关彩蛋</button>`;
         html += `<p class="done-hint">7天的旅程，到这里画一个句号</p>`;
       } else if (dayNum === currentDay) {
-        html += `<button class="done-btn" onclick="markDone(${dayNum}, event)">完成今天，解锁下一天</button>`;
+        html += `<button class="done-btn" onclick="markDone(${dayNum})">完成今天，解锁下一天</button>`;
         html += `<p class="done-hint">点这里 → 解锁 Day ${dayNum + 1}，继续旅程</p>`;
       } else {
-        html += `<button class="done-btn" onclick="markDone(${dayNum}, event)">补上这一天</button>`;
+        html += `<button class="done-btn" onclick="markDone(${dayNum})">补上这一天</button>`;
         html += `<p class="done-hint">你在补做 Day ${dayNum}，当前进度 Day ${currentDay}</p>`;
       }
       html += `</div>`;
@@ -1546,8 +1546,7 @@ function toggleDay(dayNum) {
   }, 100);
 }
 
-function markDone(dayNum, event) {
-  if (event) event.stopPropagation();
+function markDone(dayNum) {
   if (!completedDays.includes(dayNum)) {
     completedDays.push(dayNum);
   }
@@ -1648,8 +1647,7 @@ function saveInput(id, value) {
   save();
 }
 
-function copyPrompt(dayNum, event) {
-  if (event) event.stopPropagation();
+function copyPrompt(dayNum) {
   let prompt = days[dayNum - 1].aiPrompt;
 
   // Build autoFill lookup (for Day 5 fields that reference earlier days)
