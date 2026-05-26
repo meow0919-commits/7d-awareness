@@ -1185,8 +1185,8 @@ function renderAll() {
     html += `<p>${d.harvest}</p>`;
     html += `<div class="copy-block" id="copyBlock${dayNum}">`;
     html += `<div class="copy-label">${d.aiLabel}</div>`;
-    html += `<button class="copy-btn" onclick="copyPrompt(${dayNum}, event)">📋 一键复制给 ChatGPT</button>`;
-    html += `<div class="copy-hint">点一下 → 切到ChatGPT/DeeSeek → 粘贴 → 回来继续</div>`;
+    html += `<button class="copy-btn" onclick="copyPrompt(${dayNum}, event)">📋 一键复制给 AI</button>`;
+    html += `<div class="copy-hint">点一下 → 切到AI 工具 → 粘贴 → 回来继续</div>`;
     html += `</div>`;
 
     // Visual reference (optional, e.g. Day 6 image template)
@@ -1370,12 +1370,12 @@ function copyPrompt(dayNum, event) {
     const btn = block.querySelector('.copy-btn');
     btn.textContent = '✓ 已复制';
     const hint = block.querySelector('.copy-hint');
-    hint.textContent = '已复制到剪贴板，打开 ChatGPT 或 DeeSeek，粘贴即可';
+    hint.textContent = '已复制到剪贴板，打开 AI 工具，粘贴即可';
     showToast('📋 已复制！打开AI工具粘贴吧');
     setTimeout(() => {
       block.classList.remove('copied');
-      btn.textContent = '📋 一键复制给 ChatGPT';
-      hint.textContent = '点一下 → 切到ChatGPT/DeeSeek → 粘贴 → 回来继续';
+      btn.textContent = '📋 一键复制给 AI';
+      hint.textContent = '点一下 → 切到AI 工具 → 粘贴 → 回来继续';
     }, 3000);
   }).catch(() => {
     showToast('复制失败，请手动复制提示词');
