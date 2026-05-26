@@ -744,6 +744,12 @@
   </div>
 </div>
 
+<!-- Debug Panel (add ?debug to URL) -->
+<div id="debugPanel" style="display:none;background:#2c2c2c;color:#0f0;padding:12px 20px;font-size:12px;font-family:monospace;line-height:1.6;position:relative;z-index:999;">
+  <span id="debugInfo"></span>
+  <button onclick="document.getElementById('debugPanel').style.display='none'" style="position:absolute;top:6px;right:12px;background:none;border:none;color:#fff;font-size:16px;cursor:pointer;">×</button>
+</div>
+
 <!-- Header -->
 <div class="header" id="header">
   <div class="header-top">
@@ -1749,6 +1755,35 @@ function resetProgress() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     showToast('已重置');
   }
+}
+
+// ── Debug ──
+if (location.search.includes('debug')) {
+  const p = document.getElementById('debugPanel');
+  const info = document.getElementById('debugInfo');
+  p.style.display = 'block';
+  const updateDebug = () => {
+    info.innerHTML =
+      'currentDay=' + currentDay +
+      ' | maxReached=' + maxReachedDay +
+      ' | completed=[' + completedDays.join(',') + ']' +
+      ' | paid=' + paidUnlocked +
+      ' | isLocked(2)=' + isLocked(2) +
+      ' | inputs=' + Object.keys(userInputs).length +
+      ' | v=20260526a';
+  };
+  updateDebug();
+  // Override markDone to log after execution
+  const _origMarkDone = markDone;
+  markDone = function(dayNum) {
+    _origMarkDone(dayNum);
+    updateDebug();
+  };
+  const _origToggle = toggleDay;
+  toggleDay = function(dayNum) {
+    _origToggle(dayNum);
+    updateDebug();
+  };
 }
 
 // ── Header scroll effect ──
