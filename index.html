@@ -76,15 +76,15 @@
   }
   .progress-bar {
     flex: 1;
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
+    height: 6px;
+    background: #d5cfc6;
+    border-radius: 3px;
     overflow: hidden;
   }
   .progress-fill {
     height: 100%;
     background: var(--accent);
-    border-radius: 2px;
+    border-radius: 3px;
     transition: width 0.5s ease;
   }
   .progress-text {
@@ -207,6 +207,9 @@
     letter-spacing: 0.5px;
   }
   .day-body h3:first-child { margin-top: 0; }
+  .sec-reading { color: var(--text); }
+  .sec-action { color: var(--accent); }
+  .sec-harvest { color: var(--text-secondary); font-weight: 400; }
 
   .day-body p {
     font-size: 14px;
@@ -265,6 +268,7 @@
   .action-step {
     background: #f9f7f4;
     border: 1px solid var(--border);
+    border-left: 2px dotted var(--accent);
     border-radius: var(--radius);
     padding: 20px 18px;
     margin: 20px 0;
@@ -283,7 +287,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 12px;
-    font-size: 14px;
+    font-size: 16px;
     font-family: var(--font-serif);
     resize: vertical;
     background: #fff;
@@ -313,7 +317,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 10px 12px;
-    font-size: 14px;
+    font-size: 16px;
     font-family: var(--font-serif);
     resize: vertical;
     background: #fff;
@@ -329,6 +333,20 @@
     font-size: 11px;
     color: var(--text-muted);
     margin-top: 2px;
+  }
+  .input-radio {
+    accent-color: var(--accent);
+    transform: scale(1.1);
+    margin-right: 2px;
+    cursor: pointer;
+  }
+  .input-separator {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 6px 0;
+    margin: 4px 0 8px;
+    border-top: 1px solid var(--border);
   }
 
   /* ── Copy Button ── */
@@ -358,7 +376,7 @@
     color: #fff;
     border: none;
     padding: 10px 24px;
-    border-radius: 24px;
+    border-radius: 12px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -400,6 +418,10 @@
   .visual-ref-body {
     color: var(--text-secondary);
     font-size: 13px;
+  }
+  .visual-ref-body img {
+    max-height: 400px;
+    object-fit: contain;
   }
 
   /* ── Thanks Block ── */
@@ -600,7 +622,7 @@
     color: #fff;
     border: none;
     padding: 12px;
-    border-radius: 10px;
+    border-radius: 12px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
@@ -623,6 +645,63 @@
     line-height: 1.8;
   }
 
+  /* ── Manual Copy Fallback ── */
+  .manual-copy-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .manual-copy-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .manual-copy-modal {
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px 20px 20px;
+    max-width: 360px;
+    width: 100%;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+  }
+  .manual-copy-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .manual-copy-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 14px;
+    line-height: 1.8;
+  }
+  .manual-copy-modal textarea {
+    width: 100%;
+    min-height: 120px;
+    max-height: 300px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    font-family: var(--font-serif);
+    line-height: 1.7;
+    color: var(--text);
+    background: #f9f7f4;
+    resize: vertical;
+    -webkit-user-select: all;
+    user-select: all;
+  }
+
   @media (max-width: 380px) {
     .hero h1 { font-size: 18px; }
     .day-title { font-size: 14px; }
@@ -634,6 +713,16 @@
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
+
+<!-- Manual Copy Fallback -->
+<div class="manual-copy-overlay" id="manualCopyOverlay">
+  <div class="manual-copy-modal">
+    <p class="manual-copy-title">已生成提示词</p>
+    <p class="manual-copy-sub">长按下方文字 → 全选 → 复制，然后粘贴到 AI 工具</p>
+    <textarea id="manualCopyText" readonly></textarea>
+    <button class="copy-btn" onclick="closeManualCopy()" style="margin-top:12px;width:100%;">关闭</button>
+  </div>
+</div>
 
 <!-- Paywall Modal -->
 <div class="paywall-overlay" id="paywallOverlay">
@@ -686,11 +775,7 @@
       <strong>每个人自身已经具备一切的能力和资源成为自己。</strong><br>这个7天，只是帮你把它找出来。
     </p>
     <h3>开始之前</h3>
-    <ol>
-      <li>一个AI工具（ChatGPT、DeepSeek 都可以）</li>
-      <li>一个记录区（备忘录、微信收藏、甚至一张纸）</li>
-      <li>建立一个文件夹，命名为：<strong>7天AI觉察体验包_我的执行记录</strong></li>
-    </ol>
+    <p style="font-size:14px;color:var(--text-secondary);line-height:2;">准备一个AI工具（ChatGPT、DeepSeek、豆包 都可以）。页面上直接输入你的答案，点复制，粘贴到AI工具。</p>
   </div>
 </div>
 
@@ -728,18 +813,12 @@ const days = [
       { title: '案例：写不出来', body: '小B的卡住清单：<br>① 我好像没什么卡住<br>② 等等，我每天都很累算不算？<br>③ 算了，我写不出来<br><br>她问自己："哪个7天能解决？"<br><br>"写不出来"这个可以。<br><br><strong>翻译成行动：</strong>这周试一次"写不出来也写一行字"。' }
     ],
     action: `
-      <p>第一步：闭上眼睛，翻开过去48小时的真实生活，<strong>写下1-3个你最真实的卡住</strong>：</p>
-      <p>1. ____<br>2. ____<br>3. ____</p>
-      <p>第二步：选一个，问自己——</p>
-      <p><strong>"这个卡住，7天能解决吗？"</strong></p>
-      <p>如果能 → 继续。</p>
-      <p>如果不能 → 问自己："这个卡住里，有没有一个更小的、7天能解决的？"</p>
-      <p>第三步：<strong>把你选中的卡住，翻译成"这周可以做的一件小事"</strong></p>
-      <p>翻译公式：</p>
-      <p><em>"我卡在______<br> → 这周我可以______"</em></p>
-      <p>例子：</p>
-      <p><em>"我卡在不知道钱花哪了 → 这周我可以记一次账"<br>"我卡在每天都很累 → 这周我可以试一次11点前睡觉"</em></p>
-      <p style="color:var(--text-muted);font-size:13px;">如果找不到7天能解决的卡住？写："我卡在找不到一个7天能解决的卡住。"这也是一个卡住。这周你可以做的一件小事是：每天睡前花5分钟，问自己"今天什么时候觉得卡住了"。</p>
+      <p>闭上眼睛，回想过去48小时。在下面写下1-3个最真实的卡住，<strong>打勾选出你想解决的那个</strong>。</p>
+      <p>然后问自己：<strong>"这个卡住，7天能解决吗？"</strong></p>
+      <p>能 → 继续。不能 → 拆成一个更小的。</p>
+      <p>最后把它翻译成<strong>"这周可以做的一件小事"</strong>，填在下面。</p>
+      <p style="margin-top:12px;">例：<em>"我卡在不知道钱花哪了 → 这周我可以记一次账"<br>"我卡在每天都很累 → 这周我可以试一次11点前睡觉"</em></p>
+      <p style="color:var(--text-muted);font-size:13px;">找不到卡住？写："我卡在找不到一个7天能解决的卡住。"这也是一个。</p>
     `,
     harvest: '你带走的不是答案，而是：一张<strong>卡住→行动卡</strong>',
     aiLabel: '让AI帮你检查你选的卡住',
@@ -759,10 +838,10 @@ const days = [
     congrats: '你没有解决你的卡住。你只是找到了一个7天能解决的卡住。这已经够了。',
     tomorrow: '明天，你会找到自己的"报警系统"。你的身体比你更聪明——它早就知道答案了。',
     inputs: [
-      { id: 'd1_stuck1', label: '卡住 1', placeholder: '写下第一个卡住...', rows: 2 },
-      { id: 'd1_stuck2', label: '卡住 2', placeholder: '写下第二个卡住...', rows: 2 },
-      { id: 'd1_stuck3', label: '卡住 3', placeholder: '写下第三个卡住...', rows: 2 },
-      { id: 'd1_selected', label: '选中的卡住', placeholder: '你选中的那个卡住', rows: 2 },
+      { id: 'd1_stuck1', label: '卡住 1', placeholder: '写下第一个卡住...', rows: 2, selectGroup: 'd1_selected' },
+      { id: 'd1_stuck2', label: '卡住 2', placeholder: '写下第二个卡住...', rows: 2, selectGroup: 'd1_selected' },
+      { id: 'd1_stuck3', label: '卡住 3', placeholder: '写下第三个卡住...', rows: 2, selectGroup: 'd1_selected' },
+      { type: 'separator', text: '选好后，翻译成行动' },
       { id: 'd1_action', label: '翻译成的行动', placeholder: '这周可以做的一件小事', rows: 2 }
     ]
   },
@@ -948,9 +1027,9 @@ const days = [
 
 这是我的心智黑匣子数据：
 - 【表面问题】：{{d4_problem}}
-- 【我的在意】：[粘贴你追问出的"我在意什么"]
+- 【我的在意】：{{d4_care}}
 - 【我的恐惧】：{{d4_bottom_card}}
-- 【前3天日常行为采样】：[这里简单粘贴你Day 1-3抓到的身体信号/能量黑洞，如：左眼红血丝、屁股刺痛、看电脑6小时]
+- 【前3天日常行为采样】：{{d4_samples}}
 
 请精准、刚性地为我输出以下 5 项内容：
 
@@ -972,7 +1051,9 @@ const days = [
     tomorrow: '明天，你会把前4天的碎片拼成一张图。你会看到自己重复了多年的隐性模式。',
     inputs: [
       { id: 'd4_problem', label: '最想解决的问题', placeholder: '从Day 1-3中选一个最想解决的问题', rows: 2 },
-      { id: 'd4_bottom_card', label: '最终底牌', placeholder: '你在意什么 + 你害怕什么', rows: 3 }
+      { id: 'd4_care', label: '追问「我在意什么」的答案', placeholder: '追问自己"如果解决了，会得到什么？得到后还会得到什么？"', rows: 2 },
+      { id: 'd4_bottom_card', label: '最终底牌（在意+恐惧）', placeholder: '你在意什么 + 你真正害怕失去什么', rows: 3 },
+      { id: 'd4_samples', label: '前3天身体信号汇总', placeholder: '自动从 Day 1-3 汇总', rows: 2 }
     ]
   },
   {
@@ -1163,19 +1244,21 @@ const days = [
 // ── STATE ──
 const UNLOCK_CODE = '觉察进阶2026';
 let currentDay = parseInt(localStorage.getItem('aiproj_currentDay') || '1');
+let maxReachedDay = parseInt(localStorage.getItem('aiproj_maxReached') || String(currentDay));
 let completedDays = JSON.parse(localStorage.getItem('aiproj_completed') || '[]');
 let paidUnlocked = localStorage.getItem('aiproj_paid') === 'true';
 let userInputs = JSON.parse(localStorage.getItem('aiproj_inputs') || '{}');
 
 function save() {
   localStorage.setItem('aiproj_currentDay', currentDay);
+  localStorage.setItem('aiproj_maxReached', maxReachedDay);
   localStorage.setItem('aiproj_completed', JSON.stringify(completedDays));
   localStorage.setItem('aiproj_inputs', JSON.stringify(userInputs));
 }
 
 function isDone(d) { return completedDays.includes(d); }
 function isLocked(d) {
-  if (d > currentDay) return true;
+  if (d > maxReachedDay) return true;
   if (isPaywalled(d)) return true;
   return false;
 }
@@ -1190,8 +1273,14 @@ function renderAll() {
   const container = document.getElementById('daysContainer');
   const doneCount = completedDays.length;
 
+  // Save focused element state before DOM rebuild
+  const ae = document.activeElement;
+  const savedId = (ae && ae.id) ? ae.id : null;
+  const savedStart = (ae && typeof ae.selectionStart === 'number') ? ae.selectionStart : null;
+  const savedEnd = (ae && typeof ae.selectionEnd === 'number') ? ae.selectionEnd : null;
+
   // Update header
-  document.getElementById('dayIndicator').textContent = currentDay <= 7 ? `Day ${currentDay}` : '完成!';
+  document.getElementById('dayIndicator').textContent = maxReachedDay <= 7 ? `Day ${maxReachedDay}` : '完成!';
   document.getElementById('progressFill').style.width = `${(doneCount/7)*100}%`;
   document.getElementById('progressText').textContent = `${doneCount}/7`;
 
@@ -1239,7 +1328,7 @@ function renderAll() {
     }
 
     // Reading
-    html += `<h3>3分钟阅读</h3>`;
+    html += `<h3 class="sec-reading">3分钟阅读</h3>`;
     html += `<div class="reading">${d.reading}</div>`;
 
     // Cases
@@ -1250,19 +1339,37 @@ function renderAll() {
     }
 
     // Action
-    html += `<h3>5分钟行动</h3>`;
+    html += `<h3 class="sec-action">5分钟行动</h3>`;
     html += `<div class="action-step">${d.action}</div>`;
 
     // Input fields
     if (d.inputs && d.inputs.length > 0) {
       d.inputs.forEach(inp => {
+        if (inp.type === 'separator') {
+          html += `<div class="input-separator">${inp.text}</div>`;
+          return;
+        }
         let val = userInputs[inp.id] || '';
+        // Special: compile d4_samples from Day 1-3 inputs
+        if (!val && inp.id === 'd4_samples') {
+          const parts = [];
+          if (userInputs['d1_selected']) parts.push('Day1: ' + userInputs['d1_selected']);
+          if (userInputs['d2_body_signal']) parts.push('Day2: ' + userInputs['d2_body_signal']);
+          if (userInputs['d3_energy_blackhole']) parts.push('Day3: ' + userInputs['d3_energy_blackhole']);
+          val = parts.join(' | ');
+        }
         if (!val && inp.autoFill && userInputs[inp.autoFill]) {
           val = userInputs[inp.autoFill];
         }
+        const isSelected = inp.selectGroup && val && userInputs[inp.selectGroup] === val;
         html += `<div class="input-field">`;
-        html += `<label>${inp.label}</label>`;
-        html += `<textarea id="input_${inp.id}" rows="${inp.rows || 2}" placeholder="${inp.placeholder || ''}" onchange="saveInput('${inp.id}', this.value)">${escHtml(val)}</textarea>`;
+        html += `<label>`;
+        if (inp.selectGroup) {
+          const checked = isSelected ? ' checked' : '';
+          html += `<input type="radio" name="radio_${inp.selectGroup}" class="input-radio" onchange="selectRadio('${inp.selectGroup}', '${inp.id}', this)"${checked}> `;
+        }
+        html += `${inp.label}</label>`;
+        html += `<textarea id="input_${inp.id}" rows="${inp.rows || 2}" placeholder="${inp.placeholder || ''}" onchange="saveInput('${inp.id}', this.value)" oninput="onInputChange('${inp.id}', this.value${inp.selectGroup ? `, '${inp.selectGroup}'` : ''})">${escHtml(val)}</textarea>`;
         if (inp.autoFill) {
           html += `<div class="input-hint">自动从前面填充，你也可以直接修改</div>`;
         }
@@ -1271,13 +1378,15 @@ function renderAll() {
     }
 
     // AI Copy Block
-    html += `<h3>2分钟收获</h3>`;
-    html += `<p>${d.harvest}</p>`;
     html += `<div class="copy-block" id="copyBlock${dayNum}">`;
     html += `<div class="copy-label">${d.aiLabel}</div>`;
     html += `<button class="copy-btn" onclick="copyPrompt(${dayNum}, event)">📋 一键复制给 AI</button>`;
     html += `<div class="copy-hint">点一下 → 切到AI 工具 → 粘贴 → 回来继续</div>`;
     html += `</div>`;
+
+    // Harvest (reflection, placed AFTER copy so user reads it after sending to AI)
+    html += `<h3 class="sec-harvest">2分钟收获</h3>`;
+    html += `<p>${d.harvest}</p>`;
 
     // Visual reference (optional, e.g. Day 6 image template)
     if (d.visualRef) {
@@ -1396,6 +1505,17 @@ function renderAll() {
   }
 
   container.innerHTML = html;
+
+  // Restore focus to previously active element
+  if (savedId) {
+    const el = document.getElementById(savedId);
+    if (el) {
+      el.focus();
+      if (savedStart !== null) {
+        try { el.setSelectionRange(savedStart, savedEnd); } catch(e) {}
+      }
+    }
+  }
 }
 
 // ── ACTIONS ──
@@ -1422,6 +1542,7 @@ function markDone(dayNum, event) {
   const isCurrent = (dayNum === currentDay);
   if (isCurrent && currentDay < 7) {
     currentDay = Math.min(7, currentDay + 1);
+    if (currentDay > maxReachedDay) maxReachedDay = currentDay;
   }
   save();
   renderAll();
@@ -1451,6 +1572,65 @@ function markDone(dayNum, event) {
   }
 }
 
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  // Fallback for HTTP / older browsers
+  return new Promise((resolve, reject) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.top = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      if (ok) { resolve(); } else { reject(new Error('execCommand failed')); }
+    } catch (e) {
+      document.body.removeChild(ta);
+      reject(e);
+    }
+  });
+}
+
+function showManualCopy(text) {
+  document.getElementById('manualCopyText').value = text;
+  document.getElementById('manualCopyOverlay').classList.add('show');
+}
+
+function closeManualCopy() {
+  document.getElementById('manualCopyOverlay').classList.remove('show');
+}
+
+function selectRadio(groupId, sourceId, radioEl) {
+  if (radioEl.checked) {
+    const ta = document.getElementById('input_' + sourceId);
+    userInputs[groupId] = ta ? ta.value : '';
+    save();
+  }
+}
+
+function onInputChange(id, value, selectGroup) {
+  // If this textarea belongs to a radio group and its radio is checked, sync the selection
+  if (selectGroup) {
+    const radio = document.querySelector(`input[name="radio_${selectGroup}"][onchange*="${id}"]`);
+    if (radio && radio.checked) {
+      userInputs[selectGroup] = value;
+      saveDebounced();
+    }
+  }
+}
+
+let _saveTimer = null;
+function saveDebounced() {
+  if (_saveTimer) clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => { save(); _saveTimer = null; }, 250);
+}
+
 function saveInput(id, value) {
   userInputs[id] = value;
   save();
@@ -1474,14 +1654,23 @@ function copyPrompt(dayNum, event) {
   prompt = prompt.replace(/\{\{(\w+)\}\}/g, (match, key) => {
     let val = userInputs[key];
     if (!val || !val.trim()) {
-      // Try autoFill fallback (e.g. d5_day1 → d1_selected)
-      const fallback = autoFillMap[key];
-      if (fallback) val = userInputs[fallback];
+      // Special: compile d4_samples from Day 1-3
+      if (key === 'd4_samples') {
+        const parts = [];
+        if (userInputs['d1_selected']) parts.push('Day1: ' + userInputs['d1_selected']);
+        if (userInputs['d2_body_signal']) parts.push('Day2: ' + userInputs['d2_body_signal']);
+        if (userInputs['d3_energy_blackhole']) parts.push('Day3: ' + userInputs['d3_energy_blackhole']);
+        val = parts.join(' | ');
+      }
+      if (!val || !val.trim()) {
+        const fallback = autoFillMap[key];
+        if (fallback) val = userInputs[fallback];
+      }
     }
     return (val && val.trim()) ? val : '___';
   });
 
-  navigator.clipboard.writeText(prompt).then(() => {
+  copyText(prompt).then(() => {
     const block = document.getElementById('copyBlock' + dayNum);
     block.classList.add('copied');
     const btn = block.querySelector('.copy-btn');
@@ -1495,7 +1684,7 @@ function copyPrompt(dayNum, event) {
       hint.textContent = '点一下 → 切到AI 工具 → 粘贴 → 回来继续';
     }, 3000);
   }).catch(() => {
-    showToast('复制失败，请手动复制提示词');
+    showManualCopy(prompt);
   });
 }
 
@@ -1542,6 +1731,7 @@ function unlockPaywall() {
 function resetProgress() {
   if (confirm('确定要重置所有进度吗？此操作不可撤销。')) {
     currentDay = 1;
+    maxReachedDay = 1;
     completedDays = [];
     userInputs = {};
     save();
