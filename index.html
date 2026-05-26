@@ -881,15 +881,10 @@ const days = [
       <p>然后问身体一句：</p>
       <p><strong>"你刚刚，想提醒我什么？"</strong></p>
 
-      <p style="margin-top:16px;"><strong>第三步：回到那个画面，写下三件事</strong></p>
-      <p>① 那时候，你在哪里？<br><span style="color:var(--text-muted);font-size:13px;">例：昨天下午3点，开会的时候。</span></p>
-      <p>② 当时发生了什么？身体最先出现的反应是什么？<br><span style="color:var(--text-muted);font-size:13px;">例：领导说方案要重做。手心开始出汗。</span></p>
-      <p>③ 你后来做了什么？<br><span style="color:var(--text-muted);font-size:13px;">例：喝了杯水，然后刷了10分钟手机。</span></p>
-
-      <p style="margin-top:16px;"><strong>第四步：让身体说话</strong></p>
-      <p>问身体一句（如果身体会说话）：</p>
+      <p style="margin-top:16px;"><strong>第三步：让身体说话</strong></p>
+      <p>回到那个不舒服的瞬间。不要分析，不要写事发经过。</p>
+      <p>只问身体一句：</p>
       <p><strong>"你想对我说什么？"</strong></p>
-      <p>你的答案：___</p>
       <p style="color:var(--text-muted);font-size:13px;">例：肩膀发紧 → "我需要放松一下"<br>例：叹气 → "我需要被理解"</p>
     `,
     harvest: '今天你第一次发现：身体不是你的敌人。它只是比你更早发现你已经快撑不住了。',
@@ -1190,13 +1185,20 @@ const days = [
       <p>今天，我们将调用你前6天攒下的全部原始心智资产，为你组装出专属于你的 <strong>Personal OS V1.0</strong>。</p>
     `,
     action: `
-      <p>整理你的前6天输出。把前6天AI给你的所有输出，复制到一个文档里。然后复制给AI。</p>
+      <p>在交给AI之前，先写下你自己的答案——</p>
+      <p><strong>7天前，我以为：___</strong></p>
+      <p><strong>7天后，我发现：___</strong></p>
+      <p style="margin-top:16px;">写完后，整理你的前6天输出。把前6天AI给你的所有输出，复制到一个文档里。然后复制给AI。</p>
     `,
     harvest: '你带走的资产：一张一页系统图。7天前，你带着一堆模糊的焦虑开始。7天后，你带着一张清晰的地图结束。',
     aiLabel: '让AI生成你的个人操作系统',
     aiPrompt: `你现在是我的系统架构师。你的任务不是总结，而是把这些内容压缩成一个"个人操作系统"。
 
-（粘贴前6天AI给你的所有输出）
+在我粘贴前6天的AI输出之前，这是我自己对这段旅程的总结：
+	- 7天前，我以为：{{d7_before}}
+	- 7天后，我发现：{{d7_after}}
+
+	（粘贴前6天AI给你的所有输出）
 
 请严格按照下面结构输出：
 
@@ -1235,6 +1237,10 @@ const days = [
       label: '看看 Meow 历经无数次脑体拉扯后，最终拼成的一页命运地图',
       body: '你可以截取这张图发给 AI，作为你最终排版的视觉参考。<br><br><img src="meow的个人操作系统.webp" alt="Meow的个人操作系统" style="width:100%;border-radius:8px;" loading="lazy">'
     },
+    inputs: [
+      { id: 'd7_before', label: '7天前，我以为', placeholder: '写下你7天前的想法...', rows: 2 },
+      { id: 'd7_after', label: '7天后，我发现', placeholder: '写下你现在的发现...', rows: 2 }
+    ],
     congrats: '<strong>7天前，你带着模糊的焦虑开始。<br>7天后，你带着清晰的地图结束。</strong><br><br><em>这张地图会过时，因为你会成长。<br>但没关系——你知道怎么画新的了。</em><br><br><strong>我们下次旅程见。</strong>',
     thanks: '这个产品的诞生，离不开第一批用户的信任和反馈。<br><br>特别感谢以下共创者（按加入顺序）：<br><br>@用户"最人美心善的xr"——提出了"更换专业的抽象名词"及以真实的案例给用户一份指引。<br><br>你们的名字，是这个产品的一部分。',
     tomorrow: null
