@@ -296,6 +296,41 @@
     box-shadow: 0 0 0 3px rgba(199,107,74,0.08);
   }
 
+  .input-field {
+    margin-bottom: 12px;
+  }
+  .input-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    letter-spacing: 0.3px;
+  }
+  .input-field textarea {
+    width: 100%;
+    min-height: 56px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: var(--font-serif);
+    resize: vertical;
+    background: #fff;
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .input-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(199,107,74,0.08);
+  }
+  .input-field .input-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
   /* ── Copy Button ── */
   .copy-block {
     background: #fff;
@@ -710,8 +745,8 @@ const days = [
     aiLabel: '让AI帮你检查你选的卡住',
     aiPrompt: `你现在是我的卡住筛选官。
 
-我卡在：__
-我把它翻译成了：__（这周可以做的一件小事）
+我卡在：{{d1_selected}}
+我把它翻译成了：{{d1_action}}（这周可以做的一件小事）
 
 请帮我检查：
 1）【审核】这个卡住，7天能解决吗？如果不能，帮我拆成一个更小的
@@ -722,7 +757,14 @@ const days = [
 
 禁止发散，禁止写大道理。`,
     congrats: '你没有解决你的卡住。你只是找到了一个7天能解决的卡住。这已经够了。',
-    tomorrow: '明天，你会找到自己的"报警系统"。你的身体比你更聪明——它早就知道答案了。'
+    tomorrow: '明天，你会找到自己的"报警系统"。你的身体比你更聪明——它早就知道答案了。',
+    inputs: [
+      { id: 'd1_stuck1', label: '卡住 1', placeholder: '写下第一个卡住...', rows: 2 },
+      { id: 'd1_stuck2', label: '卡住 2', placeholder: '写下第二个卡住...', rows: 2 },
+      { id: 'd1_stuck3', label: '卡住 3', placeholder: '写下第三个卡住...', rows: 2 },
+      { id: 'd1_selected', label: '选中的卡住', placeholder: '你选中的那个卡住', rows: 2 },
+      { id: 'd1_action', label: '翻译成的行动', placeholder: '这周可以做的一件小事', rows: 2 }
+    ]
   },
   {
     day: 2,
@@ -778,7 +820,7 @@ const days = [
 这是我最近一次情绪波动的记录：
 （粘贴你观察到的事实）
 
-我猜这个信号在说：__（你的猜测）
+我猜这个信号在说：{{d2_body_signal}}（你的猜测）
 
 请帮我验证：
 1）【事实】我出现了哪些身体信号？
@@ -787,7 +829,10 @@ const days = [
 4）【行动】给我一个"替代动作清单"（3条），让我在信号出现时可以做。每个动作不超过1分钟。
 5）【Output】把替代动作整理成一张可打印Checklist。`,
     congrats: '你不一定已经知道怎么处理这些信号。但你第一次发现：身体其实一直在提醒你。只是以前，你没有停下来听。',
-    tomorrow: '明天，你会找到自己的"能量小偷"。大多数人一辈子都不知道自己的能量去哪了。但你会知道。'
+    tomorrow: '明天，你会找到自己的"能量小偷"。大多数人一辈子都不知道自己的能量去哪了。但你会知道。',
+    inputs: [
+      { id: 'd2_body_signal', label: '身体想说什么', placeholder: '你的身体在对你说什么？', rows: 2 }
+    ]
   },
   {
     day: 3,
@@ -844,6 +889,8 @@ const days = [
 这是我过去24/48小时的时间里，几个让我"变亮"或"变暗"的瞬间：
 （粘贴你的时间记录）
 
+我怀疑我的能量黑洞是：{{d3_energy_blackhole}}
+
 请输出：
 1）【事实】我的能量黑洞是什么？（具体到时间段和活动）
 2）【推断】这个能量黑洞背后，我在逃避什么需求？
@@ -851,7 +898,10 @@ const days = [
 4）【行动】给我一个"能量重新分配方案"
 5）【Output】给我一张可复用的"每日能量账本模板"，让我以后每天都能记录。`,
     congrats: '现在，再感觉一下——<br>和刚才比，你是 🔋 还是 🚨？<br><br>有些事情会让你更亮。有些事情会让你慢慢暗下去。<br>真正重要的，不是你做了多少。<br>而是：你有没有越来越失去自己。',
-    tomorrow: '明天，你会把Day 1选的那个问题，变成一个"可验收的任务"。"我想变得更好"是模糊问题——明天你会把它变成可以做的事。'
+    tomorrow: '明天，你会把Day 1选的那个问题，变成一个"可验收的任务"。"我想变得更好"是模糊问题——明天你会把它变成可以做的事。',
+    inputs: [
+      { id: 'd3_energy_blackhole', label: '能量黑洞是什么', placeholder: '什么东西正在反复偷走你的能量？', rows: 2 }
+    ]
   },
   {
     day: 4,
@@ -897,9 +947,9 @@ const days = [
 请不要安慰我，不要讲大道理，保持绝对的冷酷与客观。如果我的答案流于表面、在试图保护自己，请直接说："你还在保护自己，再深一层"。
 
 这是我的心智黑匣子数据：
-- 【表面问题】：[粘贴你选的那个最想解决的问题，如：熬夜刷手机]
+- 【表面问题】：{{d4_problem}}
 - 【我的在意】：[粘贴你追问出的"我在意什么"]
-- 【我的恐惧】：[粘贴你第3步挖出的"我最害怕失去什么"]
+- 【我的恐惧】：{{d4_bottom_card}}
 - 【前3天日常行为采样】：[这里简单粘贴你Day 1-3抓到的身体信号/能量黑洞，如：左眼红血丝、屁股刺痛、看电脑6小时]
 
 请精准、刚性地为我输出以下 5 项内容：
@@ -919,7 +969,11 @@ const days = [
 5）【Day 5 锁定引线】
 基于以上剥离出的真相，为我明天的"Day 5 核心模式报告"锁定一个最核心的【隐性模式盯防方向】。（请用一句话作为引线）`,
     congrats: '如果你的答案让你有点不舒服，那你就挖到了真的。如果答案很体面——再挖一层。',
-    tomorrow: '明天，你会把前4天的碎片拼成一张图。你会看到自己重复了多年的隐性模式。'
+    tomorrow: '明天，你会把前4天的碎片拼成一张图。你会看到自己重复了多年的隐性模式。',
+    inputs: [
+      { id: 'd4_problem', label: '最想解决的问题', placeholder: '从Day 1-3中选一个最想解决的问题', rows: 2 },
+      { id: 'd4_bottom_card', label: '最终底牌', placeholder: '你在意什么 + 你害怕什么', rows: 3 }
+    ]
   },
   {
     day: 5,
@@ -954,10 +1008,10 @@ const days = [
 我将提供我前4天的记录，请你为我输出一份"我的核心模式报告"。
 
 （我的数据舱：）
-- Day 1 最想解决的问题：（替换为你的内容）
-- Day 2 身体信号：（替换为你的内容）
-- Day 3 能量黑洞：（替换为你的内容）
-- Day 4 底层在意：（替换为你的内容）
+- Day 1 最想解决的问题：{{d5_day1}}
+- Day 2 身体信号：{{d5_day2}}
+- Day 3 能量黑洞：{{d5_day3}}
+- Day 4 底层在意：{{d5_day4}}
 
 输出要求：
 请以我Day 4找到的底层在意为核心锚点，连接Day 1-3的数据，冷酷、客观地输出以下内容：
@@ -969,7 +1023,13 @@ const days = [
 
 禁止项：禁止写大道理，禁止写"你可能""也许""或许"。必须用我的原话作为证据。如果证据不足，直接说"证据不足，无法判断"，严禁编造。`,
     congrats: '你把碎片拼成了模式。大多数人一辈子都看不到自己的模式，但你看到了。',
-    tomorrow: '明天，你会建立自己的"底线清单"。你知道自己在意什么，但你知道自己"不交换"什么吗？'
+    tomorrow: '明天，你会建立自己的"底线清单"。你知道自己在意什么，但你知道自己"不交换"什么吗？',
+    inputs: [
+      { id: 'd5_day1', label: 'Day 1 最想解决的问题', placeholder: '自动从 Day 1 填充', rows: 2, autoFill: 'd1_selected' },
+      { id: 'd5_day2', label: 'Day 2 身体信号记录', placeholder: '自动从 Day 2 填充', rows: 2, autoFill: 'd2_body_signal' },
+      { id: 'd5_day3', label: 'Day 3 能量黑洞', placeholder: '自动从 Day 3 填充', rows: 2, autoFill: 'd3_energy_blackhole' },
+      { id: 'd5_day4', label: 'Day 4 底层在意', placeholder: '自动从 Day 4 填充', rows: 2, autoFill: 'd4_bottom_card' }
+    ]
   },
   {
     day: 6,
@@ -1006,7 +1066,9 @@ const days = [
     aiPrompt: `你现在是我的底线教练。
 
 这是我的不交换清单草稿：
-（粘贴上面的清单）
+1. 我不交换：{{d6_noexchange1}}
+2. 我不交换：{{d6_noexchange2}}
+3. 我不交换：{{d6_noexchange3}}
 
 请冷酷、刚性地为我输出：
 1）【红线判定】检查我的清单。哪些是真正的底层生存红线？哪些只是软绵绵的"生活偏好"？请帮我剔除伪底线，升级为刚性语言。
@@ -1020,7 +1082,12 @@ const days = [
       body: '如果你觉得打字太慢，或者不知道怎么排版，直接执行以下开挂操作：<br><br>1. 截取下方 Meow 的"不交换清单"图片<br>2. 把图片直接丢给你现在的 AI 觉察官<br>3. 附上这句话：<br><br><em>"这是我教练的"不交换清单"视觉模板。我已经发给了你我的 3 条不交换草稿，请参考这张图的【三层防线（红/黄/灰）】、【STOP协议（统一按钮）】和【触碰信号】的逻辑架构，为我像素级克隆、生成一份属于我的、高精度可打印版不交换清单。文字要刚硬，语气要利落。"</em><br><br><img src="meow的不交换清单.webp" alt="Meow的不交换清单" style="width:100%;border-radius:8px;margin-top:12px;" loading="lazy">'
     },
     congrats: '你有了自己的"底线清单"。以后做决定的时候，你会知道什么不能交换。',
-    tomorrow: '明天，你会把前6天的小工具，压缩成一张图。这是你的"一页系统图"——你7天的成果。'
+    tomorrow: '明天，你会把前6天的小工具，压缩成一张图。这是你的"一页系统图"——你7天的成果。',
+    inputs: [
+      { id: 'd6_noexchange1', label: '不交换 1', placeholder: '第一条生存红线', rows: 2 },
+      { id: 'd6_noexchange2', label: '不交换 2', placeholder: '第二条生存红线', rows: 2 },
+      { id: 'd6_noexchange3', label: '不交换 3', placeholder: '第三条生存红线', rows: 2 }
+    ]
   },
   {
     day: 7,
@@ -1098,10 +1165,12 @@ const UNLOCK_CODE = '觉察进阶2026';
 let currentDay = parseInt(localStorage.getItem('aiproj_currentDay') || '1');
 let completedDays = JSON.parse(localStorage.getItem('aiproj_completed') || '[]');
 let paidUnlocked = localStorage.getItem('aiproj_paid') === 'true';
+let userInputs = JSON.parse(localStorage.getItem('aiproj_inputs') || '{}');
 
 function save() {
   localStorage.setItem('aiproj_currentDay', currentDay);
   localStorage.setItem('aiproj_completed', JSON.stringify(completedDays));
+  localStorage.setItem('aiproj_inputs', JSON.stringify(userInputs));
 }
 
 function isDone(d) { return completedDays.includes(d); }
@@ -1111,6 +1180,10 @@ function isLocked(d) {
   return false;
 }
 function isPaywalled(d) { return d >= 4 && !paidUnlocked; }
+
+function escHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
 
 // ── RENDER ──
 function renderAll() {
@@ -1179,6 +1252,23 @@ function renderAll() {
     // Action
     html += `<h3>5分钟行动</h3>`;
     html += `<div class="action-step">${d.action}</div>`;
+
+    // Input fields
+    if (d.inputs && d.inputs.length > 0) {
+      d.inputs.forEach(inp => {
+        let val = userInputs[inp.id] || '';
+        if (!val && inp.autoFill && userInputs[inp.autoFill]) {
+          val = userInputs[inp.autoFill];
+        }
+        html += `<div class="input-field">`;
+        html += `<label>${inp.label}</label>`;
+        html += `<textarea id="input_${inp.id}" rows="${inp.rows || 2}" placeholder="${inp.placeholder || ''}" onchange="saveInput('${inp.id}', this.value)">${escHtml(val)}</textarea>`;
+        if (inp.autoFill) {
+          html += `<div class="input-hint">自动从前面填充，你也可以直接修改</div>`;
+        }
+        html += `</div>`;
+      });
+    }
 
     // AI Copy Block
     html += `<h3>2分钟收获</h3>`;
@@ -1361,9 +1451,36 @@ function markDone(dayNum, event) {
   }
 }
 
+function saveInput(id, value) {
+  userInputs[id] = value;
+  save();
+}
+
 function copyPrompt(dayNum, event) {
   if (event) event.stopPropagation();
-  const prompt = days[dayNum - 1].aiPrompt;
+  let prompt = days[dayNum - 1].aiPrompt;
+
+  // Build autoFill lookup (for Day 5 fields that reference earlier days)
+  const autoFillMap = {};
+  for (const d of days) {
+    if (d.inputs) {
+      for (const inp of d.inputs) {
+        if (inp.autoFill) autoFillMap[inp.id] = inp.autoFill;
+      }
+    }
+  }
+
+  // Substitute {{key}} placeholders with user input
+  prompt = prompt.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    let val = userInputs[key];
+    if (!val || !val.trim()) {
+      // Try autoFill fallback (e.g. d5_day1 → d1_selected)
+      const fallback = autoFillMap[key];
+      if (fallback) val = userInputs[fallback];
+    }
+    return (val && val.trim()) ? val : '___';
+  });
+
   navigator.clipboard.writeText(prompt).then(() => {
     const block = document.getElementById('copyBlock' + dayNum);
     block.classList.add('copied');
@@ -1426,6 +1543,7 @@ function resetProgress() {
   if (confirm('确定要重置所有进度吗？此操作不可撤销。')) {
     currentDay = 1;
     completedDays = [];
+    userInputs = {};
     save();
     renderAll();
     window.scrollTo({ top: 0, behavior: 'smooth' });
