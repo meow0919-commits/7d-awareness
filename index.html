@@ -133,7 +133,6 @@
   .day-card.done .day-title { text-decoration: none; }
   .day-card.locked {
     opacity: 0.5;
-    pointer-events: none;
   }
 
   .day-header {
@@ -1529,7 +1528,12 @@ function renderAll() {
 // ── ACTIONS ──
 function toggleDay(dayNum) {
   if (isPaywalled(dayNum)) { showPaywall(); return; }
-  if (isLocked(dayNum)) return;
+  if (isLocked(dayNum)) {
+    if (dayNum === maxReachedDay + 1) {
+      showToast('先完成 Day ' + maxReachedDay + '，这里才会解锁');
+    }
+    return;
+  }
   currentDay = dayNum;
   save();
   renderAll();
