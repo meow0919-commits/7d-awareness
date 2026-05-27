@@ -740,7 +740,7 @@
     <input type="text" id="unlockInput" placeholder="输入解锁码" autocomplete="off">
     <button class="paywall-btn" onclick="unlockPaywall()">解锁进阶内容</button>
     <p class="paywall-error" id="paywallError"></p>
-    <p class="paywall-contact">获取解锁码：公众号「红野猫」后台回复"进阶"<br>或联系 meow0919@gmail.com</p>
+    <p class="paywall-contact">① 微信搜索公众号「红野猫」<br>② 后台回复"进阶"获取解锁码<br>③ 回到这里输入 → 解锁 Day 4–7<br><br>24小时内回复，或联系 meow0919@gmail.com</p>
   </div>
 </div>
 
@@ -789,10 +789,14 @@
 
 <!-- Footer -->
 <div class="footer">
-  <p>Contact：meow0919@gmail.com &nbsp;|&nbsp; 公众号：红野猫 &nbsp;|&nbsp; 心理援助：12356</p>
+  <p>Contact：meow0919@gmail.com &nbsp;|&nbsp; 公众号：红野猫 &nbsp;|&nbsp; 心理援助：12356 &nbsp;|&nbsp; <span id="appVersion"></span></p>
 </div>
 
 <script>
+// ── ENV ──
+const APP_VERSION = '20260527';
+const isWeChat = /micromessenger/i.test(navigator.userAgent);
+
 // ── DATA ──
 const days = [
   {
@@ -1389,7 +1393,7 @@ function renderAll() {
     html += `<div class="copy-block" id="copyBlock${dayNum}">`;
     html += `<div class="copy-label">${d.aiLabel}</div>`;
     html += `<button class="copy-btn" onclick="copyPrompt(${dayNum})">📋 一键复制给 AI</button>`;
-    html += `<div class="copy-hint">点一下 → 切到AI 工具 → 粘贴 → 回来继续</div>`;
+    html += `<div class="copy-hint">${isWeChat ? '点按钮 → 长按文字全选复制 → 切到AI工具粘贴' : '点一下 → 切到AI 工具 → 粘贴 → 回来继续'}</div>`;
     html += `</div>`;
 
     // Harvest (reflection, placed AFTER copy so user reads it after sending to AI)
@@ -1681,6 +1685,10 @@ function copyPrompt(dayNum) {
     return (val && val.trim()) ? val : '___';
   });
 
+  if (isWeChat) {
+    showManualCopy(prompt);
+    return;
+  }
   copyText(prompt).then(() => {
     const block = document.getElementById('copyBlock' + dayNum);
     block.classList.add('copied');
@@ -1692,7 +1700,7 @@ function copyPrompt(dayNum) {
     setTimeout(() => {
       block.classList.remove('copied');
       btn.textContent = '📋 一键复制给 AI';
-      hint.textContent = '点一下 → 切到AI 工具 → 粘贴 → 回来继续';
+      hint.textContent = isWeChat ? '点按钮 → 长按文字全选复制 → 切到AI工具粘贴' : '点一下 → 切到AI 工具 → 粘贴 → 回来继续';
     }, 3000);
   }).catch(() => {
     showManualCopy(prompt);
@@ -1765,7 +1773,7 @@ if (location.search.includes('debug')) {
       ' | paid=' + paidUnlocked +
       ' | isLocked(2)=' + isLocked(2) +
       ' | inputs=' + Object.keys(userInputs).length +
-      ' | v=20260526a';
+      ' | v=' + APP_VERSION;
   };
   updateDebug();
   // Override markDone to log after execution
@@ -1792,6 +1800,7 @@ window.addEventListener('scroll', () => {
 });
 
 // ── INIT ──
+document.getElementById('appVersion').textContent = 'v' + APP_VERSION;
 renderAll();
 
 // Auto-scroll to current day on load
