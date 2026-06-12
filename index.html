@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>7天AI觉察体验包</title>
+<title>点烛 · 7天AI觉察体验包</title>
 <style>
   :root {
     --bg: #faf8f5;
@@ -18,9 +18,7 @@
     --border: #e8e3dc;
     --success: #7a9e7e;
     --warning: #d4a853;
-    --day-done: #e8e3dc;
-    --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03);
-    --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+    --shadow: 0 1px 3px rgba(0,0,0,0.04);
     --radius: 12px;
     --font-serif: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', -apple-system, sans-serif;
   }
@@ -31,680 +29,183 @@
     font-family: var(--font-serif);
     background: var(--bg);
     color: var(--text);
-    line-height: 1.8;
+    line-height: 1.9;
     -webkit-font-smoothing: antialiased;
     -webkit-tap-highlight-color: transparent;
-    padding-bottom: 80px;
+    padding-bottom: 60px;
   }
 
   /* ── Header ── */
   .header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    position: sticky; top: 0; z-index: 100;
     background: rgba(250,248,245,0.97);
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s;
-  }
-  .header.scrolled { border-bottom-color: var(--border); }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .logo {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.5px;
-  }
-  .day-indicator {
-    font-size: 13px;
-    color: var(--text-secondary);
-    background: var(--accent-soft);
-    padding: 3px 10px;
-    border-radius: 20px;
-  }
-
-  .progress-wrap {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .progress-bar {
-    flex: 1;
-    height: 6px;
-    background: #d5cfc6;
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 3px;
-    transition: width 0.5s ease;
-  }
-  .progress-text {
-    font-size: 12px;
-    color: var(--text-muted);
-    white-space: nowrap;
-    min-width: 56px;
-    text-align: right;
-  }
-
-  /* ── Welcome Hero ── */
-  .hero {
-    padding: 28px 20px 20px;
+    padding: 14px 20px 10px;
+    border-bottom: 1px solid var(--border);
     text-align: center;
   }
-  .hero h1 {
-    font-size: 19px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 6px;
-    letter-spacing: 0.5px;
+  .logo { font-size: 16px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+  .brand { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  /* ── Nav ── */
+  .nav-bar {
+    position: sticky; top: 72px; z-index: 99;
+    background: rgba(250,248,245,0.95);
+    display: flex; justify-content: center; gap: 8px;
+    padding: 10px 12px; border-bottom: 1px solid var(--border);
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
   }
-  .hero .subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 16px;
+  .nav-item {
+    flex-shrink: 0; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; font-size: 12px; font-weight: 600;
+    color: var(--text-muted); background: transparent;
+    text-decoration: none; transition: all 0.2s;
   }
-  /* ── Day Card ── */
-  .days-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 0 16px;
+  .nav-item.active { background: var(--accent); color: #fff; }
+  .nav-item.visited { color: var(--accent); }
+
+  /* ── Opening ── */
+  .opening {
+    text-align: center; padding: 48px 24px 36px;
+  }
+  .opening h1 { font-size: 20px; font-weight: 700; line-height: 1.6; margin-bottom: 12px; color: var(--text); }
+  .opening .sub { font-size: 14px; color: var(--text-secondary); line-height: 2; max-width: 320px; margin: 0 auto; }
+
+  /* ── Day Section ── */
+  .day-section {
+    max-width: 600px; margin: 0 auto; padding: 36px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .day-section:last-of-type { border-bottom: none; }
+  .day-header { margin-bottom: 20px; }
+  .day-num { font-size: 12px; color: var(--accent); font-weight: 600; letter-spacing: 1px; }
+  .day-title { font-size: 18px; font-weight: 700; margin-top: 4px; }
+
+  /* ── Grounding ── */
+  .grounding {
+    font-style: italic; color: var(--text-secondary);
+    padding: 10px 16px; margin-bottom: 20px;
+    border-left: 3px solid var(--accent-soft); background: var(--accent-soft);
+    border-radius: 0 var(--radius) var(--radius) 0; font-size: 14px;
   }
 
-  .day-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: box-shadow 0.3s;
-    border: 1px solid var(--border);
+  .body-text { font-size: 14px; line-height: 2; margin-bottom: 20px; }
+  .body-text p { margin-bottom: 14px; }
+
+  /* ── Meow Case ── */
+  .meow-case {
+    background: var(--card); padding: 18px; margin-bottom: 24px;
+    border-radius: var(--radius); box-shadow: var(--shadow);
   }
-  .day-card.expanded { box-shadow: var(--shadow-md); }
-  .day-card.done .day-header { opacity: 0.7; }
-  .day-card.done .day-title { text-decoration: none; }
-  .day-card.locked {
-    opacity: 0.5;
+  .meow-case h4 { font-size: 13px; color: var(--accent); margin-bottom: 10px; }
+  .meow-case p { font-size: 13px; line-height: 1.9; margin-bottom: 10px; }
+  .meow-case p:last-child { margin-bottom: 0; }
+
+  /* ── Pause (Day 4) ── */
+  .pause-note {
+    text-align: center; padding: 14px; margin-bottom: 20px;
+    color: var(--text-secondary); font-size: 13px; font-style: italic;
   }
 
-  .day-header {
-    display: flex;
-    align-items: center;
-    padding: 16px 18px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: rgba(199,107,74,0.12);
-    gap: 12px;
-    transition: background 0.15s;
-  }
-  .day-header:active {
-    background: rgba(199,107,74,0.06);
-  }
-  .day-card.locked .day-header { cursor: default; }
-  .day-card.locked .day-header:active { background: transparent; }
-
-  .day-number {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: var(--accent-soft);
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 14px;
-    flex-shrink: 0;
-    transition: all 0.3s;
-  }
-  .day-card.done .day-number {
-    background: var(--success);
-    color: #fff;
-  }
-  .day-card.locked .day-number {
-    background: var(--border);
-    color: var(--text-muted);
-  }
-
-  .day-info { flex: 1; min-width: 0; }
-  .day-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
-  .day-badge {
-    font-size: 12px;
-    color: var(--text-muted);
-  }
-
-  .day-arrow {
-    font-size: 14px;
-    color: var(--text-muted);
-    transition: transform 0.3s;
-    flex-shrink: 0;
-  }
-  .day-card.expanded .day-arrow { transform: rotate(180deg); }
-
-  .day-body { display: none; padding: 0 18px 20px; }
-  .day-card.expanded .day-body { display: block; }
-
-  .day-body h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent);
-    margin: 18px 0 8px;
-    letter-spacing: 0.5px;
-  }
-  .day-body h3:first-child { margin-top: 0; }
-  .sec-reading { color: var(--text); }
-  .sec-action { color: var(--accent); }
-  .sec-harvest { color: var(--text-secondary); font-weight: 400; }
-
-  .day-body p {
-    font-size: 14px;
-    color: var(--text);
-    margin-bottom: 16px;
-    line-height: 1.9;
-  }
-  .day-body .reading {
-    background: #f9f7f4;
-    border-left: 3px solid var(--accent);
-    padding: 18px 18px;
-    border-radius: 0 8px 8px 0;
-    margin: 18px 0;
-    font-size: 14px;
-    line-height: 2;
-  }
-  .day-body .reading p { margin-bottom: 14px; }
-  .day-body .reading p:last-child { margin-bottom: 0; }
-  .day-body .grounding {
-    text-align: center;
-    padding: 20px 18px 14px;
-    margin-bottom: 6px;
-    font-size: 14px;
-    color: var(--accent);
-    line-height: 2.2;
-    letter-spacing: 0.5px;
-  }
-  .day-body .recap {
-    font-size: 13px;
-    color: var(--text-secondary);
-    background: #f9f7f4;
-    padding: 14px 18px;
-    border-radius: 8px;
-    margin-bottom: 22px;
-    line-height: 1.9;
-  }
-  .day-body .case {
-    background: #f9f7f4;
-    padding: 16px 18px;
-    border-radius: 8px;
-    margin: 18px 0;
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.9;
-  }
-  .day-body .case strong { color: var(--text); }
-
-  .day-body ul, .day-body ol {
-    padding-left: 20px;
-    margin: 8px 0 12px;
-    font-size: 14px;
-  }
-  .day-body li { margin-bottom: 6px; }
-
-  /* Action step */
-  .action-step {
-    background: #f9f7f4;
-    border: 1px solid var(--border);
-    border-left: 2px dotted var(--accent);
-    border-radius: var(--radius);
-    padding: 20px 18px;
-    margin: 20px 0;
-    line-height: 1.9;
-  }
-  .action-step p { margin-bottom: 14px; }
-  .action-step p:last-child { margin-bottom: 0; }
-  .action-step h4 {
-    font-size: 14px;
-    color: var(--accent);
-    margin-bottom: 8px;
-  }
-  .action-step textarea {
-    width: 100%;
-    min-height: 80px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 16px;
-    font-family: var(--font-serif);
-    resize: vertical;
-    background: #fff;
-    color: var(--text);
-    line-height: 1.7;
-  }
-  .action-step textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(199,107,74,0.08);
-  }
-
-  .input-field {
-    margin-bottom: 12px;
-  }
-  .input-field label {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    margin-bottom: 4px;
-    letter-spacing: 0.3px;
-  }
+  /* ── Input ── */
+  .input-field { margin-bottom: 16px; }
+  .input-field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
   .input-field textarea {
-    width: 100%;
-    min-height: 56px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 16px;
-    font-family: var(--font-serif);
-    resize: vertical;
-    background: #fff;
-    color: var(--text);
-    line-height: 1.7;
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 14px; line-height: 1.6; font-family: var(--font-serif);
+    resize: vertical; background: var(--card); color: var(--text);
   }
-  .input-field textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(199,107,74,0.08);
-  }
-  .input-field .input-hint {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-  .input-radio {
-    accent-color: var(--accent);
-    transform: scale(1.1);
-    margin-right: 2px;
-    cursor: pointer;
-  }
+  .input-field textarea:focus { outline: none; border-color: var(--accent); }
+  .input-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .input-radio { margin-right: 6px; accent-color: var(--accent); }
   .input-separator {
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-muted);
-    padding: 6px 0;
-    margin: 4px 0 8px;
-    border-top: 1px solid var(--border);
+    text-align: center; font-size: 12px; color: var(--text-muted);
+    margin: 20px 0 12px; letter-spacing: 1px;
   }
 
-  /* ── Copy Button ── */
+  /* ── Copy Block ── */
   .copy-block {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin: 16px 0;
-    text-align: center;
-    transition: all 0.3s;
+    background: var(--accent-soft); padding: 16px; margin: 24px 0 16px;
+    border-radius: var(--radius); text-align: center;
   }
-  .copy-block.copied {
-    border-color: var(--success);
-    background: #f7faf7;
-  }
-  .copy-label {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-  }
+  .copy-label { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
   .copy-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 10px 24px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: var(--font-serif);
-    letter-spacing: 0.5px;
-    -webkit-tap-highlight-color: transparent;
+    background: var(--accent); color: #fff; border: none;
+    padding: 10px 28px; border-radius: 20px; font-size: 14px;
+    font-family: var(--font-serif); cursor: pointer;
   }
-  .copy-btn:active {
-    transform: scale(0.96);
-    opacity: 0.9;
-  }
-  .copy-block.copied .copy-btn {
-    background: var(--success);
-  }
-  .copy-hint {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 8px;
-  }
-  .copy-block.copied .copy-hint { color: var(--success); }
+  .copy-btn:active { opacity: 0.8; }
+  .copy-hint { font-size: 11px; color: var(--text-muted); margin-top: 8px; }
 
-  /* ── Visual Reference ── */
-  .visual-ref {
-    background: #f9f7f4;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    margin: 18px 0;
-    font-size: 14px;
-    line-height: 1.9;
-  }
-  .visual-ref-label {
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 10px;
-    font-size: 14px;
-  }
-  .visual-ref-body {
-    color: var(--text-secondary);
-    font-size: 13px;
-  }
-  .visual-ref-body img {
-    max-height: 400px;
-    object-fit: contain;
-  }
+  /* ── Closing ── */
+  .closing { text-align: center; font-style: italic; color: var(--text-secondary); font-size: 14px; margin-top: 24px; padding-top: 16px; }
 
-  /* ── Thanks Block ── */
-  .thanks-block {
-    text-align: center;
-    padding: 16px 0 6px;
-    margin-top: 16px;
-    border-top: 1px solid var(--border);
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 2;
-  }
+  /* ── Visual Ref ── */
+  .visual-ref { margin-top: 20px; }
+  .visual-ref-label { font-size: 13px; font-weight: 600; margin-bottom: 10px; }
+  .visual-ref img { width: 100%; border-radius: 8px; }
 
-  /* ── Done Button ── */
-  .done-section {
-    text-align: center;
-    margin: 20px 0 8px;
-    padding: 16px 0 6px;
-    border-top: 1px solid var(--border);
+  /* ── Paywall ── */
+  .paywall-card {
+    background: var(--card); padding: 20px; margin-bottom: 20px;
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    text-align: center; border: 1px solid var(--accent);
   }
-  .done-btn {
-    display: block;
-    width: 100%;
-    background: var(--accent);
-    border: none;
-    color: #fff;
-    padding: 14px 24px;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: var(--font-serif);
-    letter-spacing: 1px;
-    -webkit-tap-highlight-color: transparent;
-    box-shadow: 0 2px 8px rgba(199,107,74,0.2);
+  .paywall-card h3 { font-size: 16px; margin-bottom: 8px; }
+  .paywall-card p { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+  .paywall-card input {
+    width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 14px; text-align: center; margin-bottom: 10px;
   }
-  .done-btn:active {
-    transform: scale(0.97);
-    box-shadow: 0 1px 4px rgba(199,107,74,0.15);
-  }
-  .done-hint {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 8px;
-  }
-  .day-card.done .done-btn {
-    background: var(--success);
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(122,158,126,0.2);
-  }
-
-  /* ── Toast ── */
-  .toast {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%) scale(0.8);
-    background: rgba(0,0,0,0.78);
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 24px;
-    font-size: 14px;
-    z-index: 999;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s;
-    white-space: nowrap;
-  }
-  .toast.show {
-    opacity: 1;
-    transform: translate(-50%,-50%) scale(1);
-  }
+  .paywall-card input:focus { outline: none; border-color: var(--accent); }
+  .paywall-cta { font-size: 12px; color: var(--text-muted); margin-top: 12px; line-height: 1.8; }
+  .paywall-error { font-size: 12px; color: var(--accent); margin-top: 6px; }
 
   /* ── Footer ── */
   .footer {
-    text-align: center;
-    padding: 24px 20px 40px;
-    font-size: 13px;
-    color: var(--text-muted);
+    max-width: 600px; margin: 40px auto 0; padding: 32px 20px 40px;
+    text-align: center; border-top: 1px solid var(--border);
   }
-  .footer a { color: var(--accent); text-decoration: none; }
+  .product-cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+  .product-card {
+    background: var(--card); padding: 16px; border-radius: var(--radius);
+    box-shadow: var(--shadow); text-align: left;
+  }
+  .product-card h4 { font-size: 14px; color: var(--accent); margin-bottom: 4px; }
+  .product-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .footer-sign { font-size: 12px; color: var(--text-muted); line-height: 2; }
 
-  /* ── Welcome & Final pages ── */
-  .welcome-card {
-    max-width: 600px;
-    margin: 0 auto 12px;
-    padding: 0 16px;
+  /* ── Toast ── */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: #2c2c2c; color: #fff; padding: 10px 24px;
+    border-radius: 20px; font-size: 13px; z-index: 999;
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
   }
-  .welcome-inner {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 20px;
-    box-shadow: var(--shadow);
-    border: 1px solid var(--border);
-    font-size: 14px;
-  }
-  .welcome-inner h3 {
-    font-size: 16px;
-    margin-bottom: 8px;
-  }
-  .welcome-inner ol {
-    padding-left: 20px;
-    margin: 8px 0;
-  }
-  .welcome-inner li { margin-bottom: 6px; }
+  .toast.show { opacity: 1; }
 
-  /* ── Paywall ── */
-  .day-card.paywalled {
-    opacity: 0.7;
-  }
-  .day-card.paywalled .day-number {
-    background: #fef7e8;
-    color: #b8952e;
-  }
-  .day-card.paywalled .day-header {
-    cursor: pointer;
-  }
-
-  .paywall-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .paywall-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
-  .paywall-modal {
-    background: #fff;
-    border-radius: 16px;
-    padding: 32px 24px 24px;
-    max-width: 340px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-    position: relative;
-  }
-  .paywall-close {
-    position: absolute;
-    top: 12px; right: 14px;
-    font-size: 22px;
-    color: var(--text-muted);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 4px 8px;
-    line-height: 1;
-  }
-  .paywall-modal h2 {
-    font-size: 18px;
-    color: var(--text);
-    margin-bottom: 6px;
-  }
-  .paywall-modal .paywall-sub {
-    font-size: 14px;
-    color: var(--text-secondary);
-    margin-bottom: 18px;
-    line-height: 1.9;
-  }
-  .paywall-includes {
-    background: #f9f7f4;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 2.2;
-    text-align: left;
-  }
-  .paywall-modal input {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 15px;
-    text-align: center;
-    margin-bottom: 12px;
-    font-family: var(--font-serif);
-    letter-spacing: 1px;
-  }
-  .paywall-modal input:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
-  .paywall-modal .paywall-btn {
-    display: block;
-    width: 100%;
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 12px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: var(--font-serif);
-    letter-spacing: 0.5px;
-  }
-  .paywall-modal .paywall-btn:active {
-    transform: scale(0.97);
-  }
-  .paywall-error {
-    font-size: 13px;
-    color: #c0392b;
-    margin-top: 8px;
-    min-height: 20px;
-  }
-  .paywall-contact {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 16px;
-    line-height: 1.8;
-  }
-
-  /* ── Manual Copy Fallback ── */
+  /* ── Manual Copy Overlay (WeChat) ── */
   .manual-copy-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 998; align-items: center; justify-content: center;
   }
-  .manual-copy-overlay.show {
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .manual-copy-overlay.show { display: flex; }
   .manual-copy-modal {
-    background: #fff;
-    border-radius: 16px;
-    padding: 24px 20px 20px;
-    max-width: 360px;
-    width: 100%;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+    background: #fff; padding: 20px; border-radius: 12px; width: 90%; max-width: 400px;
   }
-  .manual-copy-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    text-align: center;
-    margin-bottom: 6px;
-  }
-  .manual-copy-sub {
-    font-size: 13px;
-    color: var(--text-secondary);
-    text-align: center;
-    margin-bottom: 14px;
-    line-height: 1.8;
-  }
+  .manual-copy-modal p { font-size: 14px; margin-bottom: 10px; }
   .manual-copy-modal textarea {
-    width: 100%;
-    min-height: 120px;
-    max-height: 300px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 13px;
-    font-family: var(--font-serif);
-    line-height: 1.7;
-    color: var(--text);
-    background: #f9f7f4;
-    resize: vertical;
-    -webkit-user-select: all;
-    user-select: all;
+    width: 100%; height: 200px; font-size: 12px; border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px; font-family: var(--font-serif);
   }
 
+  @media (min-width: 640px) {
+    .product-cards { flex-direction: row; }
+    .product-card { flex: 1; }
+  }
   @media (max-width: 380px) {
-    .hero h1 { font-size: 18px; }
-    .day-title { font-size: 14px; }
-    .day-body p, .day-body li { font-size: 13px; }
+    .opening h1 { font-size: 18px; }
+    .day-title { font-size: 16px; }
   }
 </style>
 </head>
@@ -713,656 +214,356 @@
 <!-- Toast -->
 <div class="toast" id="toast"></div>
 
-<!-- Manual Copy Fallback -->
+<!-- Manual Copy Overlay (WeChat fallback) -->
 <div class="manual-copy-overlay" id="manualCopyOverlay">
   <div class="manual-copy-modal">
-    <p class="manual-copy-title">已生成提示词</p>
-    <p class="manual-copy-sub">长按下方文字 → 全选 → 复制，然后粘贴到 AI 工具</p>
+    <p><strong>已生成提示词</strong></p>
+    <p style="font-size:12px;color:var(--text-secondary)">长按下方文字 → 全选 → 复制，然后粘贴到 AI 工具</p>
     <textarea id="manualCopyText" readonly></textarea>
     <button class="copy-btn" onclick="closeManualCopy()" style="margin-top:12px;width:100%;">关闭</button>
   </div>
 </div>
 
-<!-- Paywall Modal -->
-<div class="paywall-overlay" id="paywallOverlay">
-  <div class="paywall-modal">
-    <button class="paywall-close" onclick="hidePaywall()">×</button>
-    <h2>前3天免费体验已结束</h2>
-    <p class="paywall-sub">Day 4–7 是进阶内容：<br>从"看见模式"到"干预模式"</p>
-    <div class="paywall-includes">
-      Day 4 · 从表面问题到底层在意<br>
-      Day 5 · 从碎片信息到核心模式<br>
-      Day 6 · 从没有底线到不可交换<br>
-      Day 7 · 从一堆工具到一张地图<br>
-      + 通关者彩蛋
-    </div>
-    <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px;">价格：19.9元</p>
-    <input type="text" id="unlockInput" placeholder="输入解锁码" autocomplete="off">
-    <button class="paywall-btn" onclick="unlockPaywall()">解锁进阶内容</button>
-    <p class="paywall-error" id="paywallError"></p>
-    <p class="paywall-contact">① 微信搜索公众号「红野猫」<br>② 后台回复"进阶"获取解锁码<br>③ 回到这里输入 → 解锁 Day 4–7<br><br>24小时内回复，或联系 meow0919@gmail.com</p>
-  </div>
-</div>
-
-<!-- Debug Panel (add ?debug to URL) -->
-<div id="debugPanel" style="display:none;background:#2c2c2c;color:#0f0;padding:12px 20px;font-size:12px;font-family:monospace;line-height:1.6;position:relative;z-index:999;">
-  <span id="debugInfo"></span>
-  <button onclick="document.getElementById('debugPanel').style.display='none'" style="position:absolute;top:6px;right:12px;background:none;border:none;color:#fff;font-size:16px;cursor:pointer;">×</button>
-</div>
-
 <!-- Header -->
-<div class="header" id="header">
-  <div class="header-top">
-    <span class="logo">7天AI觉察体验包</span>
-    <span class="day-indicator" id="dayIndicator">Day 1</span>
-  </div>
-  <div class="progress-wrap">
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-    </div>
-    <span class="progress-text" id="progressText">0/7</span>
-  </div>
+<div class="header">
+  <div class="logo">点烛</div>
+  <div class="brand">meow0919</div>
 </div>
 
-<!-- Hero -->
-<div class="hero">
-  <h1>7天后，你会发现你为什么是你</h1>
-  <p class="subtitle">不是课程，是一次自我探索的旅程。<br>7天后，带走你的卡点地图、模式报告、不交换清单。</p>
+<!-- Nav -->
+<nav class="nav-bar" id="navBar">
+  <a href="#day1" class="nav-item">1</a>
+  <a href="#day2" class="nav-item">2</a>
+  <a href="#day3" class="nav-item">3</a>
+  <a href="#day4" class="nav-item">4</a>
+  <a href="#day5" class="nav-item">5</a>
+  <a href="#day6" class="nav-item">6</a>
+  <a href="#day7" class="nav-item">7</a>
+</nav>
+
+<!-- Opening -->
+<div class="opening">
+  <h1>你本自具足。<br>这次只是把它找出来。</h1>
+  <div class="sub">你不是来被我修的。你是来看一眼的。看到什么，带走什么，都行。<br>七天。七天里完成五天就算走完了。跳过一天也没关系。明天镜子还在。</div>
 </div>
 
-<!-- Welcome / Prep Card -->
-<div class="welcome-card">
-  <div class="welcome-inner">
-    <p style="font-size:14px;color:var(--text-secondary);line-height:2;margin-bottom:18px;">
-      每天只做当天任务。不补课，不追求完美。<br>7天内完成5天，就算成功。
-    </p>
-    <p style="font-size:14px;color:var(--text-secondary);line-height:2;margin-bottom:18px;">
-      <strong>每个人自身已经具备一切的能力和资源成为自己。</strong><br>这个7天，只是帮你把它找出来。
-    </p>
-    <h3>开始之前</h3>
-    <p style="font-size:14px;color:var(--text-secondary);line-height:2;">准备一个AI工具（ChatGPT、DeepSeek、豆包 都可以）。页面上直接输入你的答案，点复制，粘贴到AI工具。</p>
+<!-- Day Sections -->
+<div id="daysContainer"></div>
+
+<!-- After -->
+<section class="day-section" id="after">
+  <div class="day-header"><div class="day-num">·</div><div class="day-title">以后</div></div>
+  <div class="body-text">
+    <p>我每天晚上，倒一杯温水。打开日记模板。写五分钟。不是写作，是把脑子里转的东西倒出来。周末 AI 帮我看看——这周什么在反复出现。</p>
+    <p>不是每天都有东西可写。有时候我只是写：今天没什么想说的。关掉。明天再来。</p>
+    <p>这个习惯跑了几个月。它不靠意志力。靠的是每天晚上那杯水和那个打开的空白文件。</p>
+    <p>如果你想一直照下去——护烛在等你。一个预配置的 Obsidian 文件夹。我用的就是这个。每天五分钟。周末 AI 帮你看看这周怎么过的。</p>
+    <p>公众号回复"护烛"。</p>
   </div>
-</div>
-
-<!-- Day Cards Container -->
-<div class="days-container" id="daysContainer"></div>
+  <div class="closing"><em>你已经在路上了。继续走。</em></div>
+</section>
 
 <!-- Footer -->
 <div class="footer">
-  <p>Contact：meow0919@gmail.com &nbsp;|&nbsp; 公众号：红野猫 &nbsp;|&nbsp; 心理援助：12356 &nbsp;|&nbsp; <span id="appVersion"></span></p>
+  <div class="product-cards">
+    <div class="product-card">
+      <h4>点烛 · 7天AI觉察体验包</h4>
+      <p>你正在这里。七天，看见自己。</p>
+    </div>
+    <div class="product-card">
+      <h4>护烛 · Obsidian 觉察系统</h4>
+      <p>每天都能照。公众号回复"护烛"。</p>
+    </div>
+    <div class="product-card">
+      <h4>举烛 · 视频节目</h4>
+      <p>有人走过这条路。关注公众号 meow0919。</p>
+    </div>
+  </div>
+  <div class="footer-sign">
+    Meow · 7d.meow0919.com &nbsp;|&nbsp; 心理援助热线：12356<br>
+    公众号：meow0919 &nbsp;|&nbsp; meow0919@gmail.com
+  </div>
 </div>
 
 <script>
 // ── ENV ──
-const APP_VERSION = '20260527';
+const APP_VERSION = '20260610';
 const isWeChat = /micromessenger/i.test(navigator.userAgent);
 
-// ── DATA ──
+// ── STATE ──
+const STORAGE_KEY = 'aiproj_inputs';
+const UNLOCK_KEY = 'aiproj_unlocked';
+let userInputs = {};
+let unlocked = localStorage.getItem(UNLOCK_KEY) === 'true';
+
+try {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) userInputs = JSON.parse(saved);
+} catch(e) {}
+
+function saveInputs() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(userInputs)); } catch(e) {}
+}
+
+// ── TOAST ──
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ── MANUAL COPY ──
+function showManualCopy(text) {
+  document.getElementById('manualCopyText').value = text;
+  document.getElementById('manualCopyOverlay').classList.add('show');
+}
+function closeManualCopy() {
+  document.getElementById('manualCopyOverlay').classList.remove('show');
+}
+
+// ── COPY ──
+function copyPrompt(dayNum) {
+  const d = days[dayNum - 1];
+  let prompt = d.aiPrompt;
+  if (d.inputs) {
+    d.inputs.forEach(inp => {
+      let val = userInputs[inp.id] || '';
+      if (!val && inp.autoFill && userInputs[inp.autoFill]) {
+        val = userInputs[inp.autoFill];
+      }
+      const re = new RegExp('\\{\\{' + inp.id + '\\}\\}', 'g');
+      prompt = prompt.replace(re, val || '___');
+    });
+  }
+  // D5 autofill — resolve selectGroup references to actual text
+  if (dayNum === 5) {
+    const d5Inputs = days[4].inputs;
+    d5Inputs.forEach(inp => {
+      let val = userInputs[inp.id] || '';
+      if (!val && inp.autoFill && userInputs[inp.autoFill]) {
+        const autoVal = userInputs[inp.autoFill];
+        // If autoFill points to a selectGroup, resolve to the selected textarea's content
+        const selectedInput = days.find(dd => dd.inputs && dd.inputs.some(i => i.selectGroup === inp.autoFill && i.id === autoVal));
+        if (selectedInput) {
+          val = userInputs[autoVal] || autoVal;
+        } else {
+          val = autoVal;
+        }
+      }
+      prompt = prompt.replace(new RegExp('\\{\\{'+inp.id+'\\}\\}','g'), val || '___');
+    });
+  }
+
+  if (isWeChat) {
+    showManualCopy(prompt);
+  } else {
+    navigator.clipboard.writeText(prompt).then(() => {
+      toast('已复制，粘贴到 AI 工具即可');
+    }).catch(() => {
+      showManualCopy(prompt);
+    });
+  }
+}
+
+// ── PAYWALL ──
+function isPaywalled(dayNum) { return dayNum >= 4 && !unlocked; }
+function unlockPaywall() {
+  const input = document.getElementById('unlockInput');
+  const code = input.value.trim();
+  if (code === '觉察进阶2026') {
+    unlocked = true;
+    try { localStorage.setItem(UNLOCK_KEY, 'true'); } catch(e) {}
+    toast('已解锁 Day 4-7');
+    renderDays();
+  } else {
+    document.getElementById('paywallError').textContent = '解锁码不正确，请重试';
+  }
+}
+
+// ── INPUT ──
+function saveInput(id, val) {
+  userInputs[id] = val;
+  saveInputs();
+}
+function selectRadio(group, id, el) {
+  if (el.checked) {
+    userInputs[group] = id;
+    saveInputs();
+  }
+}
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── DAYS DATA ──
 const days = [
-  {
-    day: 1,
-    title: '你的卡住筛选器',
-    badge: '破冰者',
-    recap: null,
-    reading: `
-      <p>你可能很熟悉这种感觉：</p>
-      <p><em>"想做的事情很多，脑子里一直转。<br>但真正坐下来时，又不知道先动哪一个。<br>最后只能点开短视频或社交软件，陷入自责。"</em></p>
-      <p>停。请卸载你的负罪感。</p>
-      <p>这不是你懒，是你的心智系统把不同级别的数据"混载"了。</p>
-      <p>有些问题很大：比如"想赚很多钱"、"找到人生方向"。这些问题7天解决不了。</p>
-      <p>有些问题刚好，比如：</p>
-      <p><em>"为什么明明知道身体不舒服，还会继续硬撑？"<br>"为什么最近每天都很累？"<br>"为什么总拖到最后才开始？"</em></p>
-      <p>这些问题——7天内，你可能第一次看见它真正的样子。</p>
-      <p>今天，不解决人生。</p>
-      <p><strong>今天，只做一件事：找到一个7天能观察的卡住。</strong></p>
-    `,
-    cases: [
-      { title: '案例：有明确卡住，且7天能解决', body: '小A的卡住清单：<br>① 我卡在每天都很累<br>② 我卡在和伴侣吵架后冷战<br>③ 我不知道怎么和家人讲我的问题<br><br>她问自己："哪个7天能解决？"<br><br>2个都可以。她选了第②个："和伴侣吵架。"<br><br><strong>翻译成行动：</strong>这周当自己想开口责怪伴侣时，先停下来做三次深呼吸。' },
-      { title: '案例：卡住太大，需要拆小', body: '小C的卡住清单：<br>① 我卡在赚1000万<br>② 我卡在找不到人生方向<br>③ 我卡在工作没有成就感<br><br>她问自己："哪个7天能解决？"<br><br>一个都不能。都太大了。<br><br>她问自己："这些卡住里，有没有一个更小的、7天能解决的？"<br><br>赚1000万 → 她给了自己3个选项：<br>A）这周看看这个月钱花哪了<br>B）这周问问自己"为什么是1000万？钱怎么分配？"<br>C）这周盘点现有资源，先赚到1千/1万/10万<br><br>她选了A："这周记一次账。"<br>因为她最想知道的是"钱去哪了"。' },
-      { title: '案例：写不出来', body: '小B的卡住清单：<br>① 我好像没什么卡住<br>② 等等，我每天都很累算不算？<br>③ 算了，我写不出来<br><br>她问自己："哪个7天能解决？"<br><br>"写不出来"这个可以。<br><br><strong>翻译成行动：</strong>这周试一次"写不出来也写一行字"。' }
-    ],
-    action: `
-      <p>闭上眼睛，回想过去48小时。在下面写下1-3个最真实的卡住，<strong>打勾选出你想解决的那个</strong>。</p>
-      <p>然后问自己：<strong>"这个卡住，7天能解决吗？"</strong></p>
-      <p>能 → 继续。不能 → 拆成一个更小的。</p>
-      <p>最后把它翻译成<strong>"这周可以做的一件小事"</strong>，填在下面。</p>
-      <p style="margin-top:12px;">例：<em>"我卡在不知道钱花哪了 → 这周我可以记一次账"<br>"我卡在每天都很累 → 这周我可以试一次11点前睡觉"</em></p>
-      <p style="color:var(--text-muted);font-size:13px;">找不到卡住？写："我卡在找不到一个7天能解决的卡住。"这也是一个。</p>
-    `,
-    harvest: '你带走的不是答案，而是：一张<strong>卡住→行动卡</strong>',
-    aiLabel: '让AI帮你检查你选的卡住',
-    aiPrompt: `你现在是我的卡住筛选官。
-
-我卡在：{{d1_selected}}
-我把它翻译成了：{{d1_action}}（这周可以做的一件小事）
-
-请帮我检查：
-1）【审核】这个卡住，7天能解决吗？如果不能，帮我拆成一个更小的
-2）【细化】如果这件小事还是太大，帮我拆成更小的步骤
-3）【提醒】执行时可能遇到什么阻碍？如何提前应对？
-4）【Output】给我一张"卡住→行动"卡片，我今天就能用
-5）【兜底】如果这个卡住7天真的解决不了，给我3个更小的"卡住"选项，让我选一个
-
-禁止发散，禁止写大道理。`,
-    congrats: '你没有解决你的卡住。你只是找到了一个7天能解决的卡住。这已经够了。',
-    tomorrow: '明天，你会找到自己的"报警系统"。你的身体比你更聪明——它早就知道答案了。',
+  { // Day 1
+    day: 1, title: '卡住筛选器',
+    grounding: '闭上眼睛。回想过去一周——有什么一直在脑子里转，没走。',
+    body: `<p>写下来。不是"应该在意什么"。是"真的在在意什么"。就算很小。就算说出来有点不好意思。</p>
+      <p>挑一个。就一个。这个礼拜可以往前推一小步的。</p>
+      <p>如果卡住太大，拆小一点。不是"赚 1000 万"——是"这周记一次账，钱花哪了"。如果找不到卡住——写："我卡在找不到一个 7 天能解决的卡住。"这也是一个。</p>`,
+    meowCase: null,
     inputs: [
-      { id: 'd1_stuck1', label: '卡住 1', placeholder: '写下第一个卡住...', rows: 2, selectGroup: 'd1_selected' },
-      { id: 'd1_stuck2', label: '卡住 2', placeholder: '写下第二个卡住...', rows: 2, selectGroup: 'd1_selected' },
-      { id: 'd1_stuck3', label: '卡住 3', placeholder: '写下第三个卡住...', rows: 2, selectGroup: 'd1_selected' },
-      { type: 'separator', text: '选好后，翻译成行动' },
-      { id: 'd1_action', label: '翻译成的行动', placeholder: '这周可以做的一件小事', rows: 2 }
-    ]
+      { id: 'd1_stuck1', label: '卡住 1', placeholder: '写下第一个卡住...', rows: 2, selectGroup: 'd1_select' },
+      { id: 'd1_stuck2', label: '卡住 2', placeholder: '写下第二个卡住...', rows: 2, selectGroup: 'd1_select' },
+      { id: 'd1_stuck3', label: '卡住 3', placeholder: '写下第三个卡住...', rows: 2, selectGroup: 'd1_select' },
+      { id: 'd1_selected', label: '选中的卡住（勾选上面的单选按钮后自动填充）', placeholder: '你选的那个卡住', rows: 1, autoFill: 'd1_select' },
+      { id: 'd1_action', label: '翻译成这周可以做的一件小事', placeholder: '这周我可以...', rows: 1 }
+    ],
+    aiPrompt: `我脑子里在转这些事：\n{{d1_selected}}\n\n我挑了这个，想这周往前推一小步：{{d1_action}}\n\n帮我看看：7 天能推动吗？太大了帮我拆小。一两句话就行。`,
+    closing: '今天，你只是把它们从口袋里掏出来，放在桌上。看一眼。',
+    visualRef: null
   },
-  {
-    day: 2,
-    title: '从"忽略身体"到"听懂信号"',
-    badge: '信号接收者',
-    grounding: '在开始今天之前，<br>先做一件事。<br><br>把双手放在肩膀上。<br>不是按摩，只是放着。<br><strong>感受一下——它是松的，还是紧的？</strong><br><br>闭上眼睛，深吸一口气。<br>用嘴慢慢吐出。<br><br>现在，问你的身体一句：<br><em>"你今天想提醒我什么？"</em><br><br>不用回答。<br>继续往下看。',
-    recap: '昨天你带走了：一张"卡住筛选卡"。你已经找到了一个7天能解决的卡住。这已经够了。今天，你会带走另一件小工具。',
-    reading: `
-      <p>你有没有过这种时刻：</p>
-      <p>明明只是散步，但越走越快。</p>
-      <p>脑子里开始出现：</p>
-      <p><em>"快点回去。"<br>"还有事情没做。"<br>"别浪费时间。"</em></p>
-      <p>然后你突然发现：自己根本没在走路。</p>
-      <p>你只是在：</p>
-      <p>一边移动身体，一边继续工作。</p>
-      <p>有时候，身体会比大脑更早报警。</p>
-      <p>肩膀开始发紧。<br>胃开始不舒服。<br>呼吸开始变浅。<br>眼睛开始酸。<br>腿开始僵。</p>
-      <p>但大脑通常会说：</p>
-      <p><em>"没事，再撑一下。"</em></p>
-      <p>于是很多人，直到身体真的撑不住了，才第一次停下来。</p>
-      <p>今天，你不需要解决情绪。</p>
-      <p><strong>你只需要：第一次听见身体已经说了什么。</strong></p>
-    `,
-    cases: [
-      { title: '真实案例', body: '小A发现，每次和伴侣吵架前，她的身体信号是：手心出汗 + 想上厕所。<br><br>她以前没注意过。<br><br>现在她知道了——这两个信号在说<strong>"我需要安全感"</strong>。' }
-    ],
-    action: `
-      <p><strong>第一步：找到一个瞬间</strong></p>
-      <p>过去48小时里，有没有一个瞬间，你突然不舒服了。从下面选一个最接近的：</p>
-      <p><em>"我到底怎么了？"<br>"我为什么停不下来？"<br>"为什么明明累了还在刷手机？"<br>"为什么身体不舒服了我还在撑？"</em></p>
-
-      <p style="margin-top:16px;"><strong>第二步：暂停，问身体</strong></p>
-      <p>不要分析。安静几秒。问身体一句：<strong>"你刚刚，想提醒我什么？"</strong></p>
-
-      <p style="margin-top:16px;"><strong>第三步：写下来</strong></p>
-      <p>把那个瞬间的<strong>场景细节</strong>和<strong>身体的回答</strong>，填在下面的输入框里。AI需要这些细节才能给你有用的翻译。</p>
-    `,
-    harvest: '今天你第一次发现：身体不是你的敌人。它只是比你更早发现你已经快撑不住了。',
-    aiLabel: '让AI帮你翻译身体信号',
-    aiPrompt: `你现在是我的身体-情绪翻译官。
-
-这是我最近一次情绪波动的记录：
-- 场景+身体反应：{{d2_scene}}
-- 我猜这个信号在说：{{d2_body_signal}}
-
-请根据我提供的场景细节（不是泛泛地），帮我精准分析：
-1）【事实】根据我描述的场景，我出现了哪些身体信号？
-2）【推断】这些信号通常代表什么需求？（给出3种可能，结合我的具体场景）
-3）【验证】我猜的那个需求，对吗？如果不对，更可能的是什么？
-4）【行动】给我一个"替代动作清单"（3条），让我在信号出现时可以做。每个动作不超过1分钟。
-5）【Output】把替代动作整理成一张可打印Checklist。`,
-    congrats: '你不一定已经知道怎么处理这些信号。但你第一次发现：身体其实一直在提醒你。只是以前，你没有停下来听。',
-    tomorrow: '明天，你会找到自己的"能量小偷"。大多数人一辈子都不知道自己的能量去哪了。但你会知道。',
+  { // Day 2
+    day: 2, title: '身体信号',
+    grounding: '把手放在肩膀上。不用按摩，只是放着。松的，还是紧的？闭上眼睛，深吸一口气。用嘴慢慢吐出。',
+    body: `<p>过去两天，有没有一个瞬间——突然不舒服了。说不清楚，但身体知道。不用分析。只回忆那个瞬间：什么时候？在哪？身体最先有反应的地方是哪里？写下来。</p>`,
+    meowCase: null,
     inputs: [
-      { id: 'd2_scene', label: '那个不舒服的瞬间', placeholder: '什么时候？在哪里？发生了什么？身体最先出现的反应是什么？例：昨天下午3点开会，领导说方案要重做，手心开始出汗，胃有点紧', rows: 3 },
-      { id: 'd2_body_signal', label: '身体想对你说什么', placeholder: '如果身体会说话，它想告诉你什么？例：肩膀发紧→我需要放松一下', rows: 2 }
-    ]
+      { id: 'd2_scene', label: '那个不舒服的瞬间', placeholder: '什么时候？在哪？发生了什么？身体最先出现的反应是什么？', rows: 3 },
+      { id: 'd2_body_signal', label: '身体想对你说什么', placeholder: '如果身体会说话，它想告诉你什么？', rows: 2 }
+    ],
+    aiPrompt: `我不舒服的瞬间：{{d2_scene}}\n\n我的身体可能在对我说：{{d2_body_signal}}\n\n帮我翻译：身体在用这些信号说什么？不需要解决方案。`,
+    closing: '身体不是你的敌人。它只是比你更早发现，你已经撑不住了。',
+    visualRef: null
   },
-  {
-    day: 3,
-    title: '你的能量去哪了',
-    badge: '能量猎人',
-    grounding: '停下来。<br>感觉一下：<strong>你现在是 🔋 还是 🚨？</strong><br><br>不用解释。<br>继续往下看。',
-    recap: '昨天你带走了：一张替代动作Checklist。<br><br>你找到了自己的"报警系统"。下次身体发出信号时，你知道该怎么做。<br><br>今天，你会找到自己的"能量黑洞"。',
-    reading: `
-      <p>有没有过这样的一天：</p>
-      <p>你其实没做很多事，但晚上还是很累。</p>
-      <p>不是身体累。而是：像被什么东西慢慢抽空了。</p>
-      <p>有时候，<br>只是开了一个会。</p>
-      <p>有时候，<br>只是回了几条消息。</p>
-      <p>有时候，<br>只是一直挂在电脑前。</p>
-      <p>一天结束后，你说不上来自己做了什么。</p>
-      <p>但身体知道：<em>"今天有什么东西，一直在消耗我。"</em></p>
-      <p>奇怪的是：有些事情，明明也花时间。但做完以后，人会亮一点。</p>
-      <p>比如：散步回来、和真正舒服的人聊天、整理房间、晒太阳、安静读几页书。</p>
-      <p>所以今天，你不用管理时间。</p>
-      <p><strong>你只需要第一次发现：什么会让你慢慢漏气，什么会让你重新亮起来。</strong></p>
-    `,
-    cases: [
-      { title: '真实案例', body: '小A记录后发现，她的能量黑洞是：睡前刷手机。<br><br>她以为是在放松。<br><br>实际上，是在消耗第二天早上的能量。' }
-    ],
-    action: `
-      <p><strong>第一步：回想，贴标签</strong></p>
-      <p>闭上眼睛。慢慢回想过去48小时里你做过的事。</p>
-      <p>只做一个动作：<strong>给每件事贴一个标签。</strong></p>
-      <p style="text-align:center;font-size:16px;line-height:2.4;margin:12px 0;">
-        🔋 做完以后，我更亮了<br>
-        ⚪ 没什么变化<br>
-        🚨 做完以后，我更暗了
-      </p>
-      <p>不用解释原因。只需要诚实。</p>
-
-      <p style="margin-top:16px;"><strong>第二步：填能量账本</strong></p>
-      <p>在下面「能量账本」输入框里，照格式写下至少4条。格式：时间 · 活动 · 🔋/⚪/🚨</p>
-      <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin:8px 0;font-size:13px;line-height:2;">
-        上午 · 散步20分钟 · 🔋<br>
-        下午 · 一直挂在电脑前 · 🚨<br>
-        晚上 · 和舒服的朋友聊天 · 🔋<br>
-        深夜 · 刷短视频40分钟 · 🚨
-      </div>
-
-      <p style="margin-top:16px;"><strong>第三步：找到反复出现的🚨</strong></p>
-      <p>看看你的账本——有没有什么东西，反复偷走你的能量？填在第二个输入框。</p>
-    `,
-    harvest: '有些事情会让你更亮。有些事情会让你慢慢暗下去。真正重要的，不是你做了多少。而是：你有没有越来越失去自己。',
-    aiLabel: '让AI帮你分析能量模式',
-    aiPrompt: `你现在是我的能量观察员。
-
-这是我的能量账本（过去24-48小时）：
-{{d3_journal}}
-
-我怀疑我的能量黑洞是：{{d3_energy_blackhole}}
-
-请根据我的能量账本数据（不是泛泛地），帮我精准分析：
-1）【事实】从账本中找出我反复出现的🚨活动，具体到时间段和行为模式
-2）【推断】这个能量黑洞背后，我在逃避什么需求？
-3）【推断】我的能量高峰时段是什么时候？
-4）【行动】给我一个"能量重新分配方案"
-5）【Output】给我一张可复用的"每日能量账本模板"，让我以后每天都能记录。`,
-    congrats: '现在，再感觉一下——<br>和刚才比，你是 🔋 还是 🚨？<br><br>有些事情会让你更亮。有些事情会让你慢慢暗下去。<br>真正重要的，不是你做了多少。<br>而是：你有没有越来越失去自己。',
-    tomorrow: '明天，你会把Day 1选的那个问题，变成一个"可验收的任务"。"我想变得更好"是模糊问题——明天你会把它变成可以做的事。',
+  { // Day 3
+    day: 3, title: '能量黑洞',
+    grounding: '想一想过去两天做过的事。给每件事贴一个标签：🔋 变亮了 / ⚪ 没变化 / 🚨 变暗了。',
+    body: `<p>不用解释。只需要诚实。有些事看起来"应该"让你亮，但它让你暗了——写下来。有些事看起来没用，但做完心里亮了——也写下来。</p><p>我的：深夜刷手机 🚨。早上行禅 🔋。</p>`,
+    meowCase: null,
     inputs: [
-      { id: 'd3_journal', label: '能量账本', placeholder: '照格式写下至少4条：时间 · 活动 · 🔋/⚪/🚨。例：上午·散步20分钟·🔋 | 下午·一直看电脑·🚨 | 晚上·和朋友聊天·🔋 | 深夜·刷短视频40分钟·🚨', rows: 4 },
+      { id: 'd3_journal', label: '能量账本', placeholder: '照格式写下至少4条：\\n上午 · 散步20分钟 · 🔋\\n下午 · 一直挂在电脑前 · 🚨\\n晚上 · 和朋友聊天 · 🔋\\n深夜 · 刷短视频40分钟 · 🚨', rows: 5 },
       { id: 'd3_energy_blackhole', label: '反复出现的能量黑洞', placeholder: '看你的账本，什么东西反复偷走能量？', rows: 2 }
-    ]
-  },
-  {
-    day: 4,
-    title: '从"表面问题"到"底层在意"',
-    badge: '问题翻译官',
-    grounding: '在看下一行之前，<br>先低下头，摸摸你现在的肩膀。<br><strong>它是耸着的吗？</strong><br><br>闭上眼睛，深深吸一口气。<br>然后用嘴发出<strong>"嘘——"</strong>的声音，<br>像气球慢漏气一样，<br>把体内的废气彻底吐光。<br><br>连续 3 次。<br><br>把能量从脑袋，<br>拉回你踩在地面的双脚上。',
-    recap: '昨天你找到了自己的"能量小偷"。<br><br>今天，我们去抓幕后的黑手。不是"怎么解决"——而是<strong>你到底在在意什么、害怕什么</strong>。',
-    reading: `
-      <p>前3天，你手里有了三块碎片：痛点、身体信号、能量黑洞。</p>
-      <p>大多数人会在这时候犯一个错误：直接跳到"怎么解决"。</p>
-      <p><em>"我和伴侣冷战"→ 开始想怎么改善沟通。<br>"我熬夜刷手机"→ 立刻下载锁机软件。</em></p>
-      <p>停。</p>
-      <p>在解决之前，你需要先回答一个问题：</p>
-      <p><strong>"我选这个问题，是因为我在意什么？"</strong></p>
-      <p>但是，有一个陷阱你必须知道：</p>
-      <p><strong>你的第一个答案，几乎一定是"安全答案"。</strong></p>
-      <p>比如"我想要健康"、"我想要幸福"、"我想要更好的关系"——这些答案没有错。但它们是你的大脑在保护你，不让你碰到真正痛的地方。</p>
-      <p>如果你的答案听起来很合理、很体面、说出来不会脸红——</p>
-      <p><strong>那你就还没挖到底。</strong></p>
-      <p>真正的底层在意，通常让你有点不舒服。<br>有点不想承认。<br>有点"原来我是这样的"。</p>
-      <p>不是你选的那个"应该解决"的问题。<br>而是那个问题背后——<strong>你真正害怕失去的，是什么？</strong></p>
-    `,
-    cases: [
-      { title: 'Meow退出短视频的真实过程（供参考）', body: '<strong>表面问题：</strong>控制不住刷手机短视频。<br><br><strong>第一层追问——我为什么刷？</strong><br>记录后发现，触发场景很具体：在意的人没回消息→感到沮丧；朋友没考虑到我→感到受伤和委屈；项目遇到困难→想逃避。<br><br><strong>第二层追问——刷手机满足了我什么？</strong><br>答案是：<strong>什么都没满足。</strong>它不能满足我被看见的需求、放松的需求、表达的需求、证明自己的需求。<br><br>于是我对自己发起了灵魂质问：<em>"如果它根本不能满足我的需求，我为什么还要在上面停留？"</em><br><br><strong>第三层追问——如果继续下去，我最害怕什么？</strong><br>晚睡→身体更差→花钱治疗→拖垮家庭→成为一个不能自立的人。<br><br>我努力奋斗了30年，最后不能独立——这会让我没有活下去的勇气。我也害怕身体的疼痛，那会让我变得脆弱，除了躺在医院什么都享受不了。<br><br><strong>当我很清楚我害怕什么、我想要什么——</strong><br>那个"暂停键"自己就出现了。脑袋里一过，就没那么想看了。从几个小时，到10分钟，到5分钟，到最后一点兴趣都没有。<br><br>道—法—术。术是最简单的。你最终要学会了解自己——然后你会有无数的办法来对付自己的坏习惯。你具备改变所需的一切资源与能力。<br><br><strong>现在，该你挖自己的底牌了。</strong>' }
     ],
-    action: `
-      <p>从Day 1-3的记录中，选一个你最想解决的问题：</p>
-      <p><strong>我最想解决的问题是：___</strong></p>
-      <p>现在，开始追问。但记住：<strong>第一个冒出来的答案，多半是安全答案。</strong>不要停在那里。</p>
-      <p>第1步："如果这个问题解决了，我会得到什么？"</p>
-      <p>→ 写下你的答案。然后盯住它。<strong>这个答案够诚实吗？还是太体面了？</strong></p>
-      <p>第2步："得到那个之后，我还会得到什么？"</p>
-      <p>→ 再深一层。不要给"大家都这么说"的答案。</p>
-      <p>第3步：<strong>"如果我真正在意的那个东西，被彻底拿走了——我最害怕发生什么？我会变成什么样的人？谁会受到影响？"</strong></p>
-      <p>→ 这一层才是你的底牌。它可能不太好看。写下来。</p>
-      <p style="color:var(--accent);font-weight:600;">→ 你的最终底牌（你在意什么 + 你害怕什么）：___</p>
-      <p style="color:var(--text-muted);font-size:13px;">如果写不出来？回到Meow的案例。她不是从"我想管理时间"挖到"效率问题"就停了。她挖到了"我害怕自己不安全"、"我害怕不能独立"、"我害怕拖垮家人"。你的底牌在那个深度。</p>
-    `,
-    harvest: '道—法—术。术是最简单的，解决方案有一万种。但只有意识真正到位——你清楚自己在意什么、害怕失去什么——你才会真正调整态度和行为。这不是小事。',
-    aiLabel: '让AI帮你验证：你挖到的是底牌，还是又一层安全答案',
-    aiPrompt: `你现在是我的问题翻译官。
-我正在进行一项卸下自我防卫的底层心智审计。
-请不要安慰我，不要讲大道理，保持绝对的冷酷与客观。如果我的答案流于表面、在试图保护自己，请直接说："你还在保护自己，再深一层"。
-
-这是我的心智黑匣子数据：
-- 【表面问题】：{{d4_problem}}
-- 【我的在意】：{{d4_care}}
-- 【我的恐惧】：{{d4_bottom_card}}
-- 【前3天日常行为采样】：{{d4_samples}}
-
-请精准、刚性地为我输出以下 5 项内容：
-
-1）【表面问题诊断】
-我最初试图用"方法论"去修补的表象和行为模式是什么？
-
-2）【安全答案清算】
-检查我的【我的在意】。这是真正的底层在意，还是我大脑编造出来的、听起来正确的"安全答案"？如果是安全答案，请直接戳穿它，并帮我向深处再追问一层。
-
-3）【核心恐惧剥离】
-检查我的【我的恐惧】。它是否触及了生存、尊严、或价值感的真正底层？如果还没有，请用一句话帮我剥离伪装：这个害怕背后，我真正更害怕的黑洞是什么？
-
-4）【言行背叛检查】
-比对我的【前3天日常行为采样】与【我的在意】。我的肉体在日常中，是在保护我口头在意的那个东西，还是在持续、疯狂地背叛它？请给出冷酷的对撞证据（必须指出具体行为是如何打脸口头承诺的）。
-
-5）【Day 5 锁定引线】
-基于以上剥离出的真相，为我明天的"Day 5 核心模式报告"锁定一个最核心的【隐性模式盯防方向】。（请用一句话作为引线）
-
-注意：如果我的回答涉及自伤、自杀、或重大创伤经历，请不要深入挖掘。请直接告诉我："这些内容超出了AI觉察的范围，建议你联系专业心理咨询师。全国心理援助热线：12356。"`,
-    congrats: '如果你的答案让你有点不舒服，那你就挖到了真的。如果答案很体面——再挖一层。',
-    tomorrow: '明天，你会把前4天的碎片拼成一张图。你会看到自己重复了多年的隐性模式。',
+    aiPrompt: `我过去两天的能量记录：\n{{d3_journal}}\n\n帮我看看：什么在反复偷走我的能量？我自己没注意到的。指出来就行。`,
+    closing: '看见了，就已经在变了。不用全部。',
+    visualRef: null
+  },
+  { // Day 4
+    day: 4, title: '底层在意',
+    grounding: '今天可能需要多坐一会儿。也可能你不想往下走。都行。',
+    body: `<p>现在选一个你最想搞清楚的问题。问自己：<em>"如果这个问题解决了，我会得到什么？"</em></p>
+      <p>写下第一个冒出来的答案。然后看着它——<strong>这个答案够诚实吗？还是太体面了？</strong></p>
+      <p>如果够诚实，再问一层。</p>`,
+    meowCase: `<h4>Meow 的真实经历</h4>
+      <p>我有一段时间控制不住刷手机短视频。表面问题很简单——浪费时间，晚睡。</p>
+      <p><strong>第一层追问——我为什么刷？</strong> 记录后发现，触发场景很具体：在意的人没回消息→感到沮丧。朋友没考虑到我→感到受伤和委屈。项目遇到困难→想逃避。</p>
+      <p><strong>第二层追问——刷手机满足了我什么？</strong> 答案是：什么都没满足。它不能满足我被看见的需求、放松的需求、表达的需求、证明自己的需求。我问自己："如果它根本不能满足我的需求，我为什么还要在上面停留？"</p>
+      <p><strong>第三层追问——如果继续下去，我最害怕什么？</strong> 晚睡→身体更差→花钱治疗→拖垮家庭→成为一个不能自立的人。</p>
+      <p>我努力奋斗了三十年，最后不能独立——这会让我没有活下去的勇气。我也害怕身体的疼痛，那会让我变得脆弱，除了躺在医院什么都享受不了。</p>
+      <p><strong>当我清楚我害怕什么——</strong> 那个"暂停键"自己就出现了。脑袋里一过，就没那么想看了。从几小时，到十分钟，到五分钟，到最后一点兴趣都没有。</p>
+      <p>你具备改变所需的一切资源与能力。</p>`,
     inputs: [
-      { id: 'd4_problem', label: '最想解决的问题', placeholder: '从Day 1-3中选一个最想解决的问题', rows: 2 },
+      { id: 'd4_problem', label: '最想解决的问题', placeholder: '从Day 1-3中选一个最想解决的问题', rows: 1 },
       { id: 'd4_care', label: '追问「我在意什么」的答案', placeholder: '追问自己"如果解决了，会得到什么？得到后还会得到什么？"', rows: 2 },
-      { id: 'd4_bottom_card', label: '最终底牌（在意+恐惧）', placeholder: '你在意什么 + 你真正害怕失去什么', rows: 3 },
-      { id: 'd4_samples', label: '前3天身体信号汇总', placeholder: '自动从 Day 1-3 汇总', rows: 2 }
-    ]
-  },
-  {
-    day: 5,
-    title: '从"碎片信息"到"核心模式"',
-    badge: '模式猎手',
-    grounding: '感觉一下你现在的呼吸。<br>它是浅浅地浮在胸口，<br>还是沉到了腹部？<br><br>如果你的脑子里现在有各种<br>"明天要做的事"在疯狂催促，<br>允许它挂在后台。<br><br>但此刻，<br>让你的手指和眼睛慢下来。',
-    recap: '昨天你带走了：你的问题翻译结果。<br><br>你找到了自己的"底层在意"——也挖到了自己真正害怕失去的东西。<br><br>今天，你会看到自己重复了多年的模式。',
-    reading: `
-      <p>前4天，你做了四件在外人看来毫无关联的事：</p>
-      <p>Day 1：写下了看似随机的痛点清单。<br>Day 2：抓到了莫名其妙的身体信号。<br>Day 3：暴露了无法自控的能量黑洞。<br>Day 4：翻译出了深埋地下的底层在意。</p>
-      <p>在普通人眼里，这只是4堆零散的日记。</p>
-      <p>但在"模式猎手"眼里——</p>
-      <p><strong>它们是一张正在对你进行全面绞杀的"隐性模式网"。</strong></p>
-      <p>今天你不需要写任何东西。因为你不需要用那个习惯了逃避的大脑去编谎话。</p>
-      <p>如果你看不见这个模式——</p>
-      <p>你一辈子换多少个工作、学多少效率工具、换多少个伴侣，你都会在同样的触发瞬间，用自毁身体的方式去向自己证明什么。</p>
-      <p><strong>今天，把你的回旋镖，从暗处抓出来。</strong></p>
-    `,
-    cases: [
-      { title: 'Meow的核心模式（供参考）', body: '<strong>核心锚点（底层在意）：</strong><br>对未来不信任，对当下不耐烦。极其渴望通过"自我证明"来获得安全感与绝对掌控。<br><br><strong>核心触发器（扳机）：</strong><br>事情的反馈出现了"真空期"——产品上线后用户没立刻付费，或散步时大脑没立刻感到放松。这种"不确定的空白"，会瞬间触发对未来的不信任。<br><br><strong>隐性模式（具体怎么干的）：</strong><br>一旦反馈延迟，立刻启动"想赢"的高耗能发动机。加倍思考、延迟吃饭睡觉、死撑着看电脑，强行制造"我仍掌控一切"的假象。<br><br><strong>最终代价（证据链）：</strong><br>在理应放松的散步中，大脑疯狂催促输入想法，强行剥夺身体的休息权。连续看电脑超6小时，对左眼红血丝和神经刺痛选择性失明。<br><br>这就是模式。如果你看不见它，你一辈子都会在反馈延迟的瞬间，用自残身体的方式向自己证明"我是安全的"。' }
+      { id: 'd4_fear', label: '最终底牌（在意+恐惧）', placeholder: '你在意什么 + 你真正害怕失去什么', rows: 2 },
+      { id: 'd4_samples', label: '前3天身体信号汇总（自动填充）', placeholder: '', rows: 2, autoFill: 'd1_selected' }
     ],
-    action: `
-      <p>现在，把前4天属于你的原始心智资产提取出来，整合成一个数据舱：</p>
-      <p>Day 1 我最想解决的问题：___</p>
-      <p>Day 2 身体信号记录：___</p>
-      <p>Day 3 能量黑洞：___</p>
-      <p>Day 4 我的底层在意：___</p>
-    `,
-    harvest: '你把碎片拼成了模式。大多数人一辈子都看不到自己的模式，但你看到了。',
-    aiLabel: '让AI生成你的核心模式报告',
-    aiPrompt: `你现在是一名"个人模式识别分析师"。
-我将提供我前4天的记录，请你为我输出一份"我的核心模式报告"。
-
-（我的数据舱：）
-- Day 1 最想解决的问题：{{d5_day1}}
-- Day 2 身体信号：{{d5_day2}}
-- Day 3 能量黑洞：{{d5_day3}}
-- Day 4 底层在意：{{d5_day4}}
-
-输出要求：
-请以我Day 4找到的底层在意为核心锚点，连接Day 1-3的数据，冷酷、客观地输出以下内容：
-1）【核心触发器】我的Day 1痛点、Day 2身体信号、Day 3能量黑洞之间，是否存在同一个触发因素？如果有，是什么？这个触发因素和我Day 4的底层在意有什么关系？
-2）【核心需求】每次这个触发器出现时，我真正想要的是什么？
-3）【核心恐惧】我真正害怕失去的是什么？
-4）【模式一句话】用一句话描述我反复出现的隐性模式。这句话必须包含我的底层在意。
-5）【证据链】用我前4天的记录中的具体句子，证明上述4点。每条证据必须标注来自Day几。
-
-禁止项：禁止写大道理，禁止写"你可能""也许""或许"。必须用我的原话作为证据。如果证据不足，直接说"证据不足，无法判断"，严禁编造。`,
-    congrats: '你把碎片拼成了模式。大多数人一辈子都看不到自己的模式，但你看到了。',
-    tomorrow: '明天，你会建立自己的"底线清单"。你知道自己在意什么，但你知道自己"不交换"什么吗？',
+    pause: '如果不想往下走了——停下来。把这一页关掉。去喝杯水。明天或者下周再来。这不是逃跑。是节奏。',
+    aiPrompt: `我在想：{{d4_problem}}\n我在意的：{{d4_care}}\n我有点害怕：{{d4_fear}}\n前3天采样：{{d4_samples}}\n\n帮我看看——我在保护自己吗？如果是，轻轻戳我一下。如果不是，告诉我你看到了什么。`,
+    closing: '有些东西今天不一定非要知道。种子种下去了，它自己会长的。',
+    visualRef: null
+  },
+  { // Day 5
+    day: 5, title: '核心模式',
+    grounding: '今天你不需要写什么。把前四天你写的东西，一起给 AI。让它帮你看看——有没有一个东西，在反复出现。',
+    body: ``,
+    meowCase: `<h4>Meow 的核心模式</h4>
+      <p>我前四天的碎片——卡住、身体信号、能量黑洞、底层在意——看起来是四堆零散的日记。但 AI 帮我照了一下，发现它们都指向同一个东西。</p>
+      <p>我底层在意的是：<strong>对未来的不信任，对当下的不耐烦。</strong> 一直在用"自我证明"来获得安全感和掌控。</p>
+      <p>什么时候会被触发？事情出现"真空期"的时候——产品上线了用户没立刻付费，散步时大脑没立刻感到放松。那种"不确定的空白"，会瞬间点燃我对未来的不信任。</p>
+      <p>一旦触发，我怎么做？立刻启动"想赢"的高耗能模式。加倍思考、延迟吃饭睡觉、死撑着看电脑，强行制造"我仍在掌控一切"的假象。</p>
+      <p>代价是什么？在应该放松的散步中，大脑疯狂催促输入想法。连续看电脑超六小时，左眼红血丝和神经刺痛——我选择性失明。</p>
+      <p>这就是我的模式。以前它跑了好几年我才发现。现在当天写日记，当天就看到了。</p>`,
     inputs: [
-      { id: 'd5_day1', label: 'Day 1 最想解决的问题', placeholder: '自动从 Day 1 填充', rows: 2, autoFill: 'd1_selected' },
-      { id: 'd5_day2', label: 'Day 2 身体信号记录', placeholder: '自动从 Day 2 填充', rows: 2, autoFill: 'd2_body_signal' },
-      { id: 'd5_day3', label: 'Day 3 能量黑洞', placeholder: '自动从 Day 3 填充', rows: 2, autoFill: 'd3_energy_blackhole' },
-      { id: 'd5_day4', label: 'Day 4 底层在意', placeholder: '自动从 Day 4 填充', rows: 2, autoFill: 'd4_bottom_card' }
-    ]
-  },
-  {
-    day: 6,
-    title: '从"没有底线"到"不可交换"',
-    badge: '底线建筑师',
-    grounding: '现在，请把背挺直，<br>让你的脊椎变成一条直线。<br><br>感觉一下你的双脚——<br>它们是平平地踩在地面上，<br>还是悬空、交叉、或者蜷缩着？<br><br>把两只脚掌完整地、<br>沉沉地压在地面上。<br><strong>感觉大地的支撑。</strong>',
-    recap: '昨天你拿到了自己的隐性模式报告。<br><br>你看到了那个为了安全感不断超载的自己。<br><br>今天，我们要在这个模式周围——<strong>铸造第一道防御墙。</strong>',
-    reading: `
-      <p>过去你总觉得自己活得累、活得被动，是因为你一直在玩一场<strong>"无边界的游戏"</strong>。</p>
-      <p>你以为自己在意健康、在意关系、在意自由。</p>
-      <p>但只要外界的压力、金钱的诱惑、或者别人的期待一逼过来——你就会默默把它们递出去，完成了交易。</p>
-      <p>别人塞过来一个紧急任务 → 你默默交出了睡眠。<br>为了向客户证明自己靠谱 → 你默默交出了周末。<br>为了维持不吵架的和谐 → 你默默交出了真实的观点。</p>
-      <p>这就是"无节制的交换"。</p>
-      <p>没有生存红线的人，只是在外壳上活着。<br>内心早已被别人的需求蚕食殆尽。</p>
-      <p><strong>"不交换"是你的底线。</strong></p>
-      <p>底线不是那些你"希望做到"的愿望。</p>
-      <p>底线是——<strong>"只要跨过这一步，我的精神或肉体就会立刻死亡"的不可交换物。</strong></p>
-    `,
-    cases: [
-      { title: '硬核不交换清单长什么样', body: '<strong>1. 我不交换"清晨的自留地"：</strong><br>无论当天有多么重要的交付、哪怕天塌下来，上午10点前我不看任何微信群和邮件。这是我物理阻断"世界对我催促"的唯一防火墙。<br><br><strong>2. 我不交换"我的身体尊严"：</strong><br>当眼睛出现第一条红血丝、屁股神经开始刺痛时，无论当前产品有多大的现金流诱惑，必须立刻断电离场。我不再用肉体的毁灭去给不安全感买单。<br><br><strong>3. 我不交换"真实的表达"：</strong><br>在任何合作和关系里，如果我感到委屈、愤怒或不同意，我绝不为了"维持表面的好关系"而假装顺从。我不交换我的真实。<br><br>底线不是用来交换利益的筹码。<br><strong>底线是保护你灵魂不被清空的容器。</strong>' }
+      { id: 'd5_day1', label: 'Day 1 我最想解决的问题', placeholder: '自动从 Day 1 填充', rows: 1, autoFill: 'd1_selected' },
+      { id: 'd5_day2', label: 'Day 2 身体信号记录', placeholder: '自动从 Day 2 填充', rows: 1, autoFill: 'd2_body_signal' },
+      { id: 'd5_day3', label: 'Day 3 能量黑洞', placeholder: '自动从 Day 3 填充', rows: 1, autoFill: 'd3_energy_blackhole' },
+      { id: 'd5_day4', label: 'Day 4 底层在意', placeholder: '自动从 Day 4 填充', rows: 1, autoFill: 'd4_fear' }
     ],
-    action: `
-      <p>想想过去这一年——</p>
-      <p>有哪几次你做完决定后，内心充满了恶心、后悔、甚至对自己的厌恶？</p>
-      <p><strong>那几次，就是你把"不可交换物"当成便宜货卖掉的时刻。</strong></p>
-      <p>现在，拿回你的主权。冷酷地写下至少3条你的生存红线：</p>
-      <p>1. 我不交换：___</p>
-      <p>2. 我不交换：___</p>
-      <p>3. 我不交换：___</p>
-      <p style="color:var(--text-muted);font-size:13px;">不要写"每天运动"这种随时能妥协的习惯。写那些一旦被侵蚀、你会对自己感到愤怒的事。</p>
-    `,
-    harvest: '底线不是用来交换利益的筹码。底线是保护你灵魂不被清空的容器。',
-    aiLabel: '让AI帮你审核不交换清单',
-    aiPrompt: `你现在是我的底线教练。
-
-这是我的不交换清单草稿：
-1. 我不交换：{{d6_noexchange1}}
-2. 我不交换：{{d6_noexchange2}}
-3. 我不交换：{{d6_noexchange3}}
-
-请冷酷、刚性地为我输出：
-1）【红线判定】检查我的清单。哪些是真正的底层生存红线？哪些只是软绵绵的"生活偏好"？请帮我剔除伪底线，升级为刚性语言。
-2）【历史清算】根据我前几天的超载模式，推断我过去最容易在什么场景下出卖哪一条？为什么？
-3）【防御盾牌】当外界（如老板、客户、伴侣）试图踩过我的红线时，给我3个可以随口说出的"拒绝模板"和具体策略。
-4）【硬核底线卡】整合出一份最终的"不可交换清单"。
-
-禁止说大道理，禁止安慰我。请用利落、坚定的语气输出。`,
-    visualRef: {
-      label: '想要一份高精度可打印版？',
-      body: '如果你觉得打字太慢，或者不知道怎么排版，直接执行以下开挂操作：<br><br>1. 截取下方 Meow 的"不交换清单"图片<br>2. 把图片直接丢给你现在的 AI 觉察官<br>3. 附上这句话：<br><br><em>"这是我教练的"不交换清单"视觉模板。我已经发给了你我的 3 条不交换草稿，请参考这张图的【三层防线（红/黄/灰）】、【STOP协议（统一按钮）】和【触碰信号】的逻辑架构，为我像素级克隆、生成一份属于我的、高精度可打印版不交换清单。文字要刚硬，语气要利落。"</em><br><br><img src="meow的不交换清单.webp" alt="Meow的不交换清单" style="width:100%;border-radius:8px;margin-top:12px;" loading="lazy">'
-    },
-    congrats: '你有了自己的"底线清单"。以后做决定的时候，你会知道什么不能交换。',
-    tomorrow: '明天，你会把前6天的小工具，压缩成一张图。这是你的"一页系统图"——你7天的成果。',
+    aiPrompt: `我前四天：\nDay 1 卡住：{{d5_day1}}\nDay 2 身体：{{d5_day2}}\nDay 3 能量：{{d5_day3}}\nDay 4 底层：{{d5_day4}}\n\n帮我看看：有没有一个模式在反复出现？用一句话告诉我。然后告诉我，我可能自己没看到的是什么。`,
+    closing: '照一下。"嗯，差不多。"或者，"你再看看这里。"',
+    visualRef: null
+  },
+  { // Day 6
+    day: 6, title: '不交换清单',
+    grounding: '把背挺直。感觉两只脚踩在地面上。',
+    body: `<p>想一下过去这一年——哪次做完决定之后，心里充满了后悔，甚至对自己的厌恶？那一次，你把什么东西廉价地交出去了。</p>
+      <p>现在问自己——有什么东西，跨过这一步，你会对自己说"不"。写下来。不是"每天运动"那种随时能妥协的习惯。是那些一旦被侵蚀、你会看不起自己的东西。一条、两条、三条都行。有一条就很好了。</p>`,
+    meowCase: null,
     inputs: [
       { id: 'd6_noexchange1', label: '不交换 1', placeholder: '第一条生存红线', rows: 2 },
       { id: 'd6_noexchange2', label: '不交换 2', placeholder: '第二条生存红线', rows: 2 },
       { id: 'd6_noexchange3', label: '不交换 3', placeholder: '第三条生存红线', rows: 2 }
-    ]
-  },
-  {
-    day: 7,
-    title: '从"一堆工具"到"一张地图"',
-    badge: '系统架构师',
-    grounding: '请合上双眼。<br><br>最后一次，盲打一个空格。<br>停顿 5 秒。<br><br>深吸气，感觉气流穿过鼻腔，<br>沉入丹田。<br>然后用嘴发出长长的<strong>"嘘——"</strong>声。<br><br>今天，是你通关的最后一步。',
-    recap: '昨天你划定了自己的主权疆域——不交换清单。<br><br>今天，我们将把散落了6天的所有碎片工具，<strong>压缩、熔炼</strong>成你受用终身的"一页心智运行系统图"版本1。',
-    reading: `
-      <p>这7天，你经历了人类心智最高强度的剥离与重组：</p>
-      <p>Day 1 & 2：抓到了痛点与身体的报错硬件。<br>Day 3 & 4：顺着能量黑洞，挖出了地下的"底层在意"。<br>Day 5 & 6：锁定了隐性模式，铸造了不可交换的防浪墙。</p>
-      <p>如果这6天的成果只是散落在你的收藏夹或笔记里——它们很快就会变成数字垃圾。</p>
-      <p>因为人类的大脑极其健忘。</p>
-      <p>且在压力过载的瞬间，一定会习惯性地向旧惯性投降。</p>
-      <p>优秀的架构师从来不去考验人性。</p>
-      <p><strong>他们直接修改默认规则。</strong></p>
-      <p>一旦进入不确定的空白期、一旦身体开始报错——不需要在大脑里进行激烈的心理斗争和道德谴责。</p>
-      <p><strong>直接触发物理熔断（STOP协议）。</strong></p>
-      <p>允许大脑在后台继续焦虑。但身体必须强制退出。</p>
-      <p>今天，我们将调用你前6天攒下的全部原始心智资产，为你组装出专属于你的 <strong>Personal OS V1.0</strong>。</p>
-    `,
-    action: `
-      <p>在交给AI之前，先写下你自己的答案——</p>
-      <p><strong>7天前，我以为：___</strong></p>
-      <p><strong>7天后，我发现：___</strong></p>
-      <p style="margin-top:16px;">写完后，整理你的前6天输出。把前6天AI给你的所有输出，复制到一个文档里。然后复制给AI。</p>
-    `,
-    harvest: '你带走的资产：一张一页系统图。7天前，你带着一堆模糊的焦虑开始。7天后，你带着一张清晰的地图结束。',
-    aiLabel: '让AI生成你的个人操作系统',
-    aiPrompt: `你现在是我的系统架构师。你的任务不是总结，而是把这些内容压缩成一个"个人操作系统"。
-
-在我粘贴前6天的AI输出之前，这是我自己对这段旅程的总结：
-	- 7天前，我以为：{{d7_before}}
-	- 7天后，我发现：{{d7_after}}
-
-	（粘贴前6天AI给你的所有输出）
-
-请严格按照下面结构输出：
-
-# 1. 系统目标（System Goal）
-一句话说明：我真正想保护、维持或获得的是什么？
-
-# 2. 输入层（Input）
-列出：什么情况下，我最容易进入旧模式？
-包括：场景、情绪、关系、身体状态、时间压力
-
-# 3. 核心运行模式（Core Pattern）
-用固定句式输出：
-"当____发生时，我会通过____保护自己，因为我害怕/渴望____。"
-只允许保留1-3个核心模式。
-
-# 4. 替代协议（Replacement Protocol）
-当旧模式启动时，我可以执行什么新的动作替代？
-格式：WHEN（触发）→ THEN（替代动作）→ BECAUSE（底层原因）
-只保留最关键动作。
-
-# 5. 底线系统（Boundary System）
-根据我的"不交换清单"，提炼：
-- 我的红线（不可谈判）
-- 我的止损信号
-- 我的统一退出机制
-
-# 6. 反馈机制（Feedback Loop）
-我如何判断自己正在变稳定，而不是再次失控？
-请输出：3个正向信号 + 3个危险信号
-
-# 7. 一页总结（One-page Operating System）
-最后用不超过10句话，压缩成一张"个人操作系统说明书"。
-
-要求：不要鸡汤，不要安慰，不要抽象成长语言。只保留可执行结构。全文不超过一页。`,
-    visualRef: {
-      label: '看看 Meow 历经无数次脑体拉扯后，最终拼成的一页命运地图',
-      body: '你可以截取这张图发给 AI，作为你最终排版的视觉参考。<br><br><img src="meow的个人操作系统.webp" alt="Meow的个人操作系统" style="width:100%;border-radius:8px;" loading="lazy">'
-    },
-    inputs: [
-      { id: 'd7_before', label: '7天前，我以为', placeholder: '写下你7天前的想法...', rows: 2 },
-      { id: 'd7_after', label: '7天后，我发现', placeholder: '写下你现在的发现...', rows: 2 }
     ],
-    congrats: '<strong>7天前，你带着模糊的焦虑开始。<br>7天后，你带着清晰的地图结束。</strong><br><br><em>这张地图会过时，因为你会成长。<br>但没关系——你知道怎么画新的了。</em><br><br><strong>我们下次旅程见。</strong>',
-    thanks: '这个产品的诞生，离不开第一批用户的信任和反馈。<br><br>特别感谢以下共创者（按加入顺序）：<br><br>@用户"最人美心善的xr"——提出了"更换专业的抽象名词"及以真实的案例给用户一份指引。<br><br>你们的名字，是这个产品的一部分。',
-    tomorrow: null
+    aiPrompt: `我的不交换清单：\n1. {{d6_noexchange1}}\n2. {{d6_noexchange2}}\n3. {{d6_noexchange3}}\n\n帮我看看：哪些是真的底线？哪些只是偏好？帮我加固它们。不用客气。`,
+    closing: '站住了。脚踩在地上。这样就很好。',
+    visualRef: {
+      label: '视觉参考：Meow 的不交换清单',
+      body: '<p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">你可以把这张图发给 AI，让它参考格式，为你生成属于你自己的不交换清单。</p><img src="meow的不交换清单.webp" alt="Meow的不交换清单" style="width:100%;border-radius:8px;" loading="lazy">'
+    }
+  },
+  { // Day 7
+    day: 7, title: '个人操作系统',
+    grounding: '闭上眼。深吸一口气。慢慢吐出来。',
+    body: `<p>七天前，你带着一堆说不清楚的东西开始的。现在——你手上有什么。不是 AI 给你的报告。是你自己写下来的那些东西。把它们再看一遍。</p>
+      <p>回答两个问题：</p>
+      <p><strong>"七天前，我以为：___"</strong></p>
+      <p><strong>"七天后，我发现：___"</strong></p>
+      <p>写完后，把前六天 AI 给你的所有输出，复制到一个文档里。然后发给 AI。</p>`,
+    meowCase: null,
+    inputs: [
+      { id: 'd7_before', label: '七天前，我以为', placeholder: '写下你七天前的想法', rows: 2 },
+      { id: 'd7_after', label: '七天后，我发现', placeholder: '写下你现在的发现', rows: 2 }
+    ],
+    aiPrompt: `我前六天的所有记录，和我自己的两句话：\n- 七天前，我以为：{{d7_before}}\n- 七天后，我发现：{{d7_after}}\n\n帮我整理成一份属于我自己的"个人说明书"。不需要长。像一面镜子——让我以后想起来的时候，能回来看一眼。\n\n（粘贴前六天的 AI 输出）`,
+    closing: '七天。照了七天镜子。还是有点东西的。',
+    visualRef: {
+      label: '视觉参考：Meow 的个人操作系统',
+      body: '<p style="font-size:13px;color:var(--text-secondary);margin-bottom:12px;">你可以把这张图发给 AI，让它参考排版，为你生成属于你自己的系统图。</p><img src="meow的个人操作系统.webp" alt="Meow的个人操作系统" style="width:100%;border-radius:8px;" loading="lazy">'
+    }
   }
 ];
 
-// ── STATE ──
-const UNLOCK_CODE = '觉察进阶2026';
-let currentDay = parseInt(localStorage.getItem('aiproj_currentDay') || '1');
-let maxReachedDay = parseInt(localStorage.getItem('aiproj_maxReached') || String(currentDay));
-let completedDays = JSON.parse(localStorage.getItem('aiproj_completed') || '[]');
-let paidUnlocked = localStorage.getItem('aiproj_paid') === 'true';
-let userInputs = JSON.parse(localStorage.getItem('aiproj_inputs') || '{}');
-
-function save() {
-  try {
-    localStorage.setItem('aiproj_currentDay', currentDay);
-    localStorage.setItem('aiproj_maxReached', maxReachedDay);
-    localStorage.setItem('aiproj_completed', JSON.stringify(completedDays));
-    localStorage.setItem('aiproj_inputs', JSON.stringify(userInputs));
-  } catch(e) {}
-}
-
-function isDone(d) { return completedDays.includes(d); }
-function isLocked(d) {
-  if (d > maxReachedDay) return true;
-  if (isPaywalled(d)) return true;
-  return false;
-}
-function isPaywalled(d) { return d >= 4 && !paidUnlocked; }
-
-function escHtml(str) {
-  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
 // ── RENDER ──
-function renderAll() {
+function renderDays() {
   const container = document.getElementById('daysContainer');
-  const doneCount = completedDays.length;
-
-  // Save focused element state before DOM rebuild
-  const ae = document.activeElement;
-  const savedId = (ae && ae.id) ? ae.id : null;
-  const savedStart = (ae && typeof ae.selectionStart === 'number') ? ae.selectionStart : null;
-  const savedEnd = (ae && typeof ae.selectionEnd === 'number') ? ae.selectionEnd : null;
-
-  // Update header
-  document.getElementById('dayIndicator').textContent = maxReachedDay <= 7 ? `Day ${maxReachedDay}` : '完成!';
-  document.getElementById('progressFill').style.width = `${(doneCount/7)*100}%`;
-  document.getElementById('progressText').textContent = `${doneCount}/7`;
-
-  // Build cards
   let html = '';
+
+  // Paywall banner (if not unlocked)
+  if (!unlocked) {
+    html += `<div class="day-section" id="day4-section">
+      <div class="paywall-card">
+        <h3>前3天免费体验已结束</h3>
+        <p>Day 4–7 是进阶内容：从"看见自己"到"持续看见自己"</p>
+        <p style="font-size:12px;color:var(--text-muted)">Day 4 · 底层在意 &nbsp;|&nbsp; Day 5 · 核心模式 &nbsp;|&nbsp; Day 6 · 不交换清单 &nbsp;|&nbsp; Day 7 · 个人操作系统</p>
+        <p style="font-size:13px;">价格：19.9元</p>
+        <input type="text" id="unlockInput" placeholder="输入解锁码" autocomplete="off">
+        <button class="copy-btn" onclick="unlockPaywall()">解锁进阶内容</button>
+        <p class="paywall-error" id="paywallError"></p>
+        <p class="paywall-cta">① 微信搜索公众号「meow0919」<br>② 后台回复"进阶"获取解锁码<br>③ 回到这里输入 → 解锁 Day 4–7<br><br>或联系 meow0919@gmail.com</p>
+      </div>
+    </div>`;
+  }
+
   days.forEach((d, i) => {
     const dayNum = i + 1;
-    const done = isDone(dayNum);
-    const locked = isLocked(dayNum);
-    const expanded = dayNum === currentDay && !locked;
+    if (dayNum >= 4 && !unlocked) return; // Skip paywalled days
 
-    let cls = 'day-card';
-    if (expanded) cls += ' expanded';
-    if (done) cls += ' done';
-    if (locked && !isPaywalled(dayNum)) cls += ' locked';
-    if (isPaywalled(dayNum)) cls += ' paywalled';
+    html += `<section class="day-section" id="day${dayNum}">`;
+    html += `<div class="day-header"><div class="day-num">Day ${dayNum}</div><div class="day-title">${d.title}</div></div>`;
 
-    html += `<div class="${cls}" id="dayCard${dayNum}">`;
+    if (d.grounding) html += `<div class="grounding">${d.grounding}</div>`;
+    if (d.body) html += `<div class="body-text">${d.body}</div>`;
+    if (d.meowCase) html += `<div class="meow-case">${d.meowCase}</div>`;
+    if (d.pause) html += `<div class="pause-note">${d.pause}</div>`;
 
-    // Header
-    html += `<div class="day-header" onclick="toggleDay(${dayNum})">`;
-    html += `<div class="day-number">${done ? '✓' : dayNum}</div>`;
-    html += `<div class="day-info">`;
-    html += `<div class="day-title">Day ${dayNum}｜${d.title}</div>`;
-    html += `<div class="day-badge">${d.badge}</div>`;
-    html += `</div>`;
-    if (!locked) {
-      html += `<div class="day-arrow">▼</div>`;
-    }
-    html += `</div>`;
-
-    // Body
-    html += `<div class="day-body">`;
-
-    // Grounding (pause moment)
-    if (d.grounding) {
-      html += `<div class="grounding">${d.grounding}</div>`;
-    }
-
-    // Recap
-    if (d.recap) {
-      html += `<div class="recap"><strong>上集回顾</strong><br>${d.recap}</div>`;
-    } else {
-      html += `<div class="recap"><strong>上集回顾</strong><br>这是你的第一天。你还没有上集回顾。但7天后，你会发现：很多真正的变化，不是从"解决问题"开始的。而是从"终于看清问题"开始的。</div>`;
-    }
-
-    // Reading
-    html += `<h3 class="sec-reading">3分钟阅读</h3>`;
-    html += `<div class="reading">${d.reading}</div>`;
-
-    // Cases
-    if (d.cases && d.cases.length > 0) {
-      d.cases.forEach(c => {
-        html += `<div class="case"><strong>${c.title}</strong><br>${c.body}</div>`;
-      });
-    }
-
-    // Action
-    html += `<h3 class="sec-action">5分钟行动</h3>`;
-    html += `<div class="action-step">${d.action}</div>`;
-
-    // Input fields
-    if (d.inputs && d.inputs.length > 0) {
+    // Inputs
+    if (d.inputs) {
       d.inputs.forEach(inp => {
-        if (inp.type === 'separator') {
-          html += `<div class="input-separator">${inp.text}</div>`;
-          return;
-        }
         let val = userInputs[inp.id] || '';
-        // Special: compile d4_samples from Day 1-3 inputs
         if (!val && inp.id === 'd4_samples') {
           const parts = [];
           if (userInputs['d1_selected']) parts.push('Day1: ' + userInputs['d1_selected']);
@@ -1373,444 +574,74 @@ function renderAll() {
         if (!val && inp.autoFill && userInputs[inp.autoFill]) {
           val = userInputs[inp.autoFill];
         }
-        const isSelected = inp.selectGroup && val && userInputs[inp.selectGroup] === val;
-        html += `<div class="input-field">`;
-        html += `<label>`;
+        const isSelected = inp.selectGroup && val && userInputs[inp.selectGroup] === inp.id;
+        html += `<div class="input-field"><label>`;
         if (inp.selectGroup) {
           const checked = isSelected ? ' checked' : '';
           html += `<input type="radio" name="radio_${inp.selectGroup}" class="input-radio" onchange="selectRadio('${inp.selectGroup}', '${inp.id}', this)"${checked}> `;
         }
         html += `${inp.label}</label>`;
-        html += `<textarea id="input_${inp.id}" rows="${inp.rows || 2}" placeholder="${inp.placeholder || ''}" onchange="saveInput('${inp.id}', this.value)" oninput="onInputChange('${inp.id}', this.value${inp.selectGroup ? `, '${inp.selectGroup}'` : ''})">${escHtml(val)}</textarea>`;
-        if (inp.autoFill) {
+        html += `<textarea id="input_${inp.id}" rows="${inp.rows || 2}" placeholder="${inp.placeholder || ''}" onchange="saveInput('${inp.id}', this.value)" oninput="saveInput('${inp.id}', this.value)">${escHtml(val)}</textarea>`;
+        if (inp.autoFill && !inp.selectGroup) {
           html += `<div class="input-hint">自动从前面填充，你也可以直接修改</div>`;
         }
         html += `</div>`;
       });
     }
 
-    // AI Copy Block
-    html += `<div class="copy-block" id="copyBlock${dayNum}">`;
-    html += `<div class="copy-label">${d.aiLabel}</div>`;
+    // AI Copy
+    html += `<div class="copy-block">`;
+    html += `<div class="copy-label">交给 AI</div>`;
     html += `<button class="copy-btn" onclick="copyPrompt(${dayNum})">📋 一键复制给 AI</button>`;
-    html += `<div class="copy-hint">${isWeChat ? '点按钮 → 长按文字全选复制 → 切到AI工具粘贴' : '点一下 → 切到AI 工具 → 粘贴 → 回来继续'}</div>`;
+    html += `<div class="copy-hint">${isWeChat ? '点按钮 → 长按文字全选复制 → 切到 AI 工具粘贴' : '点一下 → 切到 AI 工具 → 粘贴 → 回来继续'}</div>`;
     html += `</div>`;
 
-    // Harvest (reflection, placed AFTER copy so user reads it after sending to AI)
-    html += `<h3 class="sec-harvest">2分钟收获</h3>`;
-    html += `<p>${d.harvest}</p>`;
-
-    // Visual reference (optional, e.g. Day 6 image template)
+    // Visual Reference
     if (d.visualRef) {
-      html += `<div class="visual-ref">`;
-      html += `<div class="visual-ref-label">🖼️ ${d.visualRef.label}</div>`;
-      html += `<div class="visual-ref-body">${d.visualRef.body}</div>`;
-      html += `</div>`;
+      html += `<div class="visual-ref"><div class="visual-ref-label">${d.visualRef.label}</div><div>${d.visualRef.body}</div></div>`;
     }
 
-    // Congrats + Progress (only after completion)
-    if (done) {
-      html += `<div style="text-align:center;margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">`;
-      html += `<p style="font-weight:600;color:var(--accent);">🎉 恭喜，你完成了第${dayNum}天。</p>`;
-      html += `<p style="font-size:14px;">${d.congrats}</p>`;
-      html += `<p style="font-size:13px;color:var(--text-muted);">进度：${doneCount}/7 | ${Math.round(doneCount/7*100)}%</p>`;
-      if (d.tomorrow) {
-        html += `<p style="font-size:13px;color:var(--text-secondary);margin-top:8px;"><strong>明天预告：</strong>${d.tomorrow}</p>`;
-      }
-      html += `</div>`;
-    }
+    if (d.closing) html += `<div class="closing">${d.closing}</div>`;
 
-    // Thanks (e.g. Day 7)
-    if (d.thanks) {
-      html += `<div class="thanks-block">${d.thanks}</div>`;
-    }
-
-    // Done button
-    if (!done) {
-      html += `<div class="done-section">`;
-      if (dayNum === 7) {
-        html += `<button class="done-btn" onclick="markDone(${dayNum})">完成最后一天，领取通关彩蛋</button>`;
-        html += `<p class="done-hint">7天的旅程，到这里画一个句号</p>`;
-      } else if (dayNum === currentDay) {
-        html += `<button class="done-btn" onclick="markDone(${dayNum})">完成今天，解锁下一天</button>`;
-        html += `<p class="done-hint">点这里 → 解锁 Day ${dayNum + 1}，继续旅程</p>`;
-      } else {
-        html += `<button class="done-btn" onclick="markDone(${dayNum})">补上这一天</button>`;
-        html += `<p class="done-hint">你在补做 Day ${dayNum}，当前进度 Day ${currentDay}</p>`;
-      }
-      html += `</div>`;
-    } else {
-      html += `<div class="done-section">`;
-      if (dayNum === 7) {
-        html += `<button class="done-btn" disabled>✅ 全部通关</button>`;
-      } else {
-        html += `<button class="done-btn" disabled>✅ 已完成</button>`;
-      }
-      html += `</div>`;
-    }
-
-    html += `</div></div>`;
+    html += `</section>`;
   });
-
-  // Final card — Easter Egg
-  if (completedDays.length === 7) {
-    html += `
-    <div class="day-card expanded" style="border-color:var(--accent);">
-      <div class="day-header" style="cursor:default;">
-        <div class="day-number" style="background:var(--accent);color:#fff;">★</div>
-        <div class="day-info">
-          <div class="day-title">通关者彩蛋</div>
-          <div class="day-badge">恭喜你，通关者</div>
-        </div>
-      </div>
-      <div class="day-body" style="display:block;">
-
-        <p style="text-align:center;font-size:16px;line-height:2.2;margin:12px 0 6px;">
-          <strong>7天让你看见自己。<br>接下来的路，你自己走。</strong>
-        </p>
-
-        <div class="reading" style="margin-top:20px;">
-          <p><strong>小A，7天体验包毕业生。</strong></p>
-          <p>7天后，她带走了自己的核心模式："价值感外包"——她总是通过别人的认可来确认自己的价值。</p>
-          <p><strong>3个月后，她的数据变化：</strong><br>触发到识别的时长：从2小时 → 5分钟<br>替代动作执行率：从10% → 75%<br>后果强度：从4分 → 2分</p>
-          <p><em>"这个模式还在，但我已经不怕它了。我知道它什么时候会出现，也知道怎么应对。"</em></p>
-          <p>这不是天赋。<strong>这是每天5分钟，坚持3个月的结果。</strong></p>
-        </div>
-
-        <h3>你只需要做一件事</h3>
-        <div class="action-step">
-          <p>7天后，你不需要做更多。<strong>你只需要保持一件事：</strong></p>
-          <p><strong>每天写觉察日记，5分钟。</strong></p>
-          <p>不是长篇大论。不是深度分析。只是记录：</p>
-          <p><em>今天发生了什么？<br>我的身体有什么信号？<br>我启动了哪个模式？<br>我用了哪个替代动作？</em></p>
-          <p><strong>就这么多。5分钟，关上。</strong></p>
-        </div>
-
-        <h3>你会看到什么</h3>
-        <div class="case">
-          <p>如果你坚持做这一件事，你会看到三个指标的变化：</p>
-          <p>触发到识别的时长：几小时 → 几分钟 → 触发瞬间<br>
-          替代动作执行率：20% → 60% → 90%+<br>
-          模式后果强度：4-5分 → 2-3分 → 1分</p>
-          <p><strong>你不需要刻意追求这些数字。它们会自然发生。</strong></p>
-        </div>
-
-        <p style="text-align:center;margin:28px 0 10px;font-size:15px;line-height:2.2;">
-          <strong>7天前，你带着模糊的焦虑开始。<br>
-          7天后，你带着清晰的地图结束。</strong><br><br>
-          <em>这张地图会过时，因为你会成长。<br>
-          但没关系——你知道怎么画新的了。</em>
-        </p>
-
-        <p style="text-align:center;font-size:16px;line-height:2;color:var(--accent);">
-          <em>"你已经在路上了。继续走。"</em><br>
-          <span style="font-size:14px;">—— Meow</span>
-        </p>
-
-        <div style="text-align:center;margin-top:24px;">
-          <button class="copy-btn" onclick="resetProgress()" style="background:transparent;border:1px solid var(--border);color:var(--text-secondary);">
-            🔄 重新开始
-          </button>
-        </div>
-      </div>
-    </div>`;
-  }
 
   container.innerHTML = html;
-
-  // Restore focus to previously active element
-  if (savedId) {
-    const el = document.getElementById(savedId);
-    if (el) {
-      el.focus();
-      if (savedStart !== null) {
-        try { el.setSelectionRange(savedStart, savedEnd); } catch(e) {}
-      }
-    }
-  }
 }
 
-// ── ACTIONS ──
-function toggleDay(dayNum) {
-  if (isPaywalled(dayNum)) { showPaywall(); return; }
-  if (isLocked(dayNum)) {
-    if (dayNum === maxReachedDay + 1) {
-      showToast('先完成 Day ' + maxReachedDay + '，这里才会解锁');
-    }
-    return;
-  }
-  currentDay = dayNum;
-  renderAll();
-  save();
-  setTimeout(() => {
-    const el = document.getElementById('dayCard' + dayNum);
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 70;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  }, 100);
-}
-
-function markDone(dayNum) {
-  if (!completedDays.includes(dayNum)) {
-    completedDays.push(dayNum);
-  }
-  const isCurrent = (dayNum === currentDay);
-  if (isCurrent && currentDay < 7) {
-    currentDay = Math.min(7, currentDay + 1);
-    if (currentDay > maxReachedDay) maxReachedDay = currentDay;
-  }
-  renderAll();
-  save();
-
-  // Paywall: completing Day 3 advances to Day 4 which is behind paywall
-  if (isCurrent && dayNum === 3 && !paidUnlocked) {
-    showPaywall();
-    return;
-  }
-
-  if (!isCurrent) {
-    showToast('✅ 已补上 Day ' + dayNum);
-  } else if (completedDays.length === 7) {
-    showToast('🎉 全部通关！彩蛋已解锁');
-  } else {
-    showToast('✅ 已完成！下一关已解锁');
-  }
-  // Scroll to next day — longer timeout to let DOM reflow complete
-  if (currentDay <= 7) {
-    setTimeout(() => {
-      const el = document.getElementById('dayCard' + currentDay);
-      if (el) {
-        const top = el.getBoundingClientRect().top + window.scrollY - 70;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    }, 350);
-  }
-}
-
-function copyText(text) {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    return navigator.clipboard.writeText(text);
-  }
-  // Fallback for HTTP / older browsers
-  return new Promise((resolve, reject) => {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
-    ta.style.top = '-9999px';
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    try {
-      const ok = document.execCommand('copy');
-      document.body.removeChild(ta);
-      if (ok) { resolve(); } else { reject(new Error('execCommand failed')); }
-    } catch (e) {
-      document.body.removeChild(ta);
-      reject(e);
-    }
+// ── SCROLL SPY ──
+function updateActiveNav() {
+  const sections = document.querySelectorAll('.day-section');
+  const navItems = document.querySelectorAll('.nav-item');
+  let current = null;
+  sections.forEach(s => {
+    const rect = s.getBoundingClientRect();
+    if (rect.top <= 180) current = s.id;
+  });
+  navItems.forEach(item => {
+    item.classList.remove('active', 'visited');
+    if (item.getAttribute('href') === '#' + current) item.classList.add('active');
+    const targetDay = parseInt(item.getAttribute('href').replace('#day',''));
+    if (targetDay <= (current ? parseInt(current.replace('day','')) : 1)) item.classList.add('visited');
   });
 }
 
-function showManualCopy(text) {
-  document.getElementById('manualCopyText').value = text;
-  document.getElementById('manualCopyOverlay').classList.add('show');
-}
+window.addEventListener('scroll', updateActiveNav, { passive: true });
 
-function closeManualCopy() {
-  document.getElementById('manualCopyOverlay').classList.remove('show');
-}
-
-function selectRadio(groupId, sourceId, radioEl) {
-  if (radioEl.checked) {
-    const ta = document.getElementById('input_' + sourceId);
-    userInputs[groupId] = ta ? ta.value : '';
-    save();
-  }
-}
-
-function onInputChange(id, value, selectGroup) {
-  // If this textarea belongs to a radio group and its radio is checked, sync the selection
-  if (selectGroup) {
-    const radio = document.querySelector(`input[name="radio_${selectGroup}"][onchange*="${id}"]`);
-    if (radio && radio.checked) {
-      userInputs[selectGroup] = value;
-      saveDebounced();
-    }
-  }
-}
-
-let _saveTimer = null;
-function saveDebounced() {
-  if (_saveTimer) clearTimeout(_saveTimer);
-  _saveTimer = setTimeout(() => { save(); _saveTimer = null; }, 250);
-}
-
-function saveInput(id, value) {
-  userInputs[id] = value;
-  save();
-}
-
-function copyPrompt(dayNum) {
-  let prompt = days[dayNum - 1].aiPrompt;
-
-  // Build autoFill lookup (for Day 5 fields that reference earlier days)
-  const autoFillMap = {};
-  for (const d of days) {
-    if (d.inputs) {
-      for (const inp of d.inputs) {
-        if (inp.autoFill) autoFillMap[inp.id] = inp.autoFill;
-      }
-    }
-  }
-
-  // Substitute {{key}} placeholders with user input
-  prompt = prompt.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-    let val = userInputs[key];
-    if (!val || !val.trim()) {
-      // Special: compile d4_samples from Day 1-3
-      if (key === 'd4_samples') {
-        const parts = [];
-        if (userInputs['d1_selected']) parts.push('Day1: ' + userInputs['d1_selected']);
-        if (userInputs['d2_body_signal']) parts.push('Day2: ' + userInputs['d2_body_signal']);
-        if (userInputs['d3_energy_blackhole']) parts.push('Day3: ' + userInputs['d3_energy_blackhole']);
-        val = parts.join(' | ');
-      }
-      if (!val || !val.trim()) {
-        const fallback = autoFillMap[key];
-        if (fallback) val = userInputs[fallback];
-      }
-    }
-    return (val && val.trim()) ? val : '___';
-  });
-
-  if (isWeChat) {
-    showManualCopy(prompt);
-    return;
-  }
-  copyText(prompt).then(() => {
-    const block = document.getElementById('copyBlock' + dayNum);
-    block.classList.add('copied');
-    const btn = block.querySelector('.copy-btn');
-    btn.textContent = '✓ 已复制';
-    const hint = block.querySelector('.copy-hint');
-    hint.textContent = '已复制到剪贴板，打开 AI 工具，粘贴即可';
-    showToast('📋 已复制！打开AI工具粘贴吧');
-    setTimeout(() => {
-      block.classList.remove('copied');
-      btn.textContent = '📋 一键复制给 AI';
-      hint.textContent = isWeChat ? '点按钮 → 长按文字全选复制 → 切到AI工具粘贴' : '点一下 → 切到AI 工具 → 粘贴 → 回来继续';
-    }, 3000);
-  }).catch(() => {
-    showManualCopy(prompt);
-  });
-}
-
-function showToast(msg) {
-  const toast = document.getElementById('toast');
-  toast.textContent = msg;
-  toast.classList.add('show');
-  clearTimeout(toast._timeout);
-  toast._timeout = setTimeout(() => toast.classList.remove('show'), 2000);
-}
-
-// ── PAYWALL ──
-function showPaywall() {
-  document.getElementById('paywallOverlay').classList.add('show');
-  document.getElementById('unlockInput').value = '';
-  document.getElementById('paywallError').textContent = '';
-}
-
-function hidePaywall() {
-  document.getElementById('paywallOverlay').classList.remove('show');
-}
-
-function unlockPaywall() {
-  const input = document.getElementById('unlockInput');
-  const code = input.value.trim();
-  if (code === UNLOCK_CODE) {
-    paidUnlocked = true;
-    localStorage.setItem('aiproj_paid', 'true');
-    hidePaywall();
-    renderAll();
-    showToast('🔓 已解锁！继续你的旅程');
-    setTimeout(() => {
-      const el = document.getElementById('dayCard4');
-      if (el) {
-        const top = el.getBoundingClientRect().top + window.scrollY - 70;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    }, 300);
-  } else {
-    document.getElementById('paywallError').textContent = '解锁码不正确，请检查后重试';
-  }
-}
-
-function resetProgress() {
-  if (confirm('确定要重置所有进度吗？此操作不可撤销。')) {
-    currentDay = 1;
-    maxReachedDay = 1;
-    completedDays = [];
-    userInputs = {};
-    save();
-    renderAll();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    showToast('已重置');
-  }
-}
-
-// ── Debug ──
-if (location.search.includes('debug')) {
-  const p = document.getElementById('debugPanel');
-  const info = document.getElementById('debugInfo');
-  p.style.display = 'block';
-  const updateDebug = () => {
-    info.innerHTML =
-      'currentDay=' + currentDay +
-      ' | maxReached=' + maxReachedDay +
-      ' | completed=[' + completedDays.join(',') + ']' +
-      ' | paid=' + paidUnlocked +
-      ' | isLocked(2)=' + isLocked(2) +
-      ' | inputs=' + Object.keys(userInputs).length +
-      ' | v=' + APP_VERSION;
-  };
-  updateDebug();
-  // Override markDone to log after execution
-  const _origMarkDone = markDone;
-  markDone = function(dayNum) {
-    _origMarkDone(dayNum);
-    updateDebug();
-  };
-  const _origToggle = toggleDay;
-  toggleDay = function(dayNum) {
-    _origToggle(dayNum);
-    updateDebug();
-  };
-}
-
-// ── Header scroll effect ──
-window.addEventListener('scroll', () => {
-  const header = document.getElementById('header');
-  if (window.scrollY > 10) {
-    header.classList.add('scrolled');
-  } else {
-    header.classList.remove('scrolled');
+// ── SMOOTH SCROLL ──
+document.getElementById('navBar').addEventListener('click', function(e) {
+  if (e.target.classList.contains('nav-item')) {
+    e.preventDefault();
+    const target = document.querySelector(e.target.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
   }
 });
 
 // ── INIT ──
-document.getElementById('appVersion').textContent = 'v' + APP_VERSION;
-renderAll();
-
-// Auto-scroll to current day on load
-setTimeout(() => {
-  const el = document.getElementById('dayCard' + currentDay);
-  if (el) {
-    const top = el.getBoundingClientRect().top + window.scrollY - 70;
-    window.scrollTo({ top, behavior: 'auto' });
-  }
-}, 300);
+renderDays();
+// Default: Day 1 active
+document.querySelector('.nav-item[href="#day1"]').classList.add('active');
+updateActiveNav();
 </script>
 </body>
 </html>
