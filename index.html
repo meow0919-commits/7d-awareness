@@ -330,7 +330,7 @@ function copyPrompt(dayNum) {
     d.inputs.forEach(inp => {
       let val = userInputs[inp.id] || '';
       if (!val && inp.autoFill && userInputs[inp.autoFill]) {
-        val = userInputs[inp.autoFill];
+        val = resolveAutoFill(inp.autoFill);
       }
       const re = new RegExp('\\{\\{' + inp.id + '\\}\\}', 'g');
       prompt = prompt.replace(re, val || '___');
@@ -342,14 +342,7 @@ function copyPrompt(dayNum) {
     d5Inputs.forEach(inp => {
       let val = userInputs[inp.id] || '';
       if (!val && inp.autoFill && userInputs[inp.autoFill]) {
-        const autoVal = userInputs[inp.autoFill];
-        // If autoFill points to a selectGroup, resolve to the selected textarea's content
-        const selectedInput = days.find(dd => dd.inputs && dd.inputs.some(i => i.selectGroup === inp.autoFill && i.id === autoVal));
-        if (selectedInput) {
-          val = userInputs[autoVal] || autoVal;
-        } else {
-          val = autoVal;
-        }
+        val = resolveAutoFill(inp.autoFill);
       }
       prompt = prompt.replace(new RegExp('\\{\\{'+inp.id+'\\}\\}','g'), val || '___');
     });
@@ -391,6 +384,22 @@ function selectRadio(group, id, el) {
     userInputs[group] = id;
     saveInputs();
   }
+}
+// Resolve autoFill: if key points to a selectGroup, return the selected textarea's content
+function resolveAutoFill(key) {
+  const rawVal = userInputs[key];
+  if (!rawVal) return '';
+  // Check if key is a selectGroup — find any input with that selectGroup
+  for (const day of days) {
+    if (!day.inputs) continue;
+    for (const inp of day.inputs) {
+      if (inp.selectGroup === key) {
+        // rawVal is the selected radio ID (e.g. 'd1_stuck1'), resolve to text
+        return userInputs[rawVal] || rawVal;
+      }
+    }
+  }
+  return rawVal;
 }
 function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -573,7 +582,7 @@ function renderDays() {
           val = parts.join(' | ');
         }
         if (!val && inp.autoFill && userInputs[inp.autoFill]) {
-          val = userInputs[inp.autoFill];
+          val = resolveAutoFill(inp.autoFill);
         }
         const isSelected = inp.selectGroup && val && userInputs[inp.selectGroup] === inp.id;
         html += `<div class="input-field"><label>`;
